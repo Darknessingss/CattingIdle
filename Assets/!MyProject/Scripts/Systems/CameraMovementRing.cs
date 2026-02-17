@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraMovementRing : MonoBehaviour
 {
@@ -23,14 +24,25 @@ public class CameraMovementRing : MonoBehaviour
     [Header("Настройки круга")]
     [SerializeField] private CircleSettings circleSettings = new();
 
-    [Header("Управление")]
-    [SerializeField] private bool useArrowKeys = true;
-    [SerializeField] private bool useADKeys = true;
+    [Header("Input System")]
+    [SerializeField] private InputAction rotateAction;
 
     private float currentAngle;
     private float angleVelocity;
     private Vector3 centerPosition;
     private const float LerpMultiplier = 10f;
+
+    private void Awake()
+    {
+        if (rotateAction == null)
+        {
+            rotateAction = new InputAction("RotateCamera", InputActionType.Value);
+            rotateAction.AddBinding("<Keyboard>/leftArrow");
+            rotateAction.AddBinding("<Keyboard>/a");
+            rotateAction.AddBinding("<Keyboard>/rightArrow");
+            rotateAction.AddBinding("<Keyboard>/d");
+        }
+    }
 
     private void Start()
     {
@@ -38,13 +50,22 @@ public class CameraMovementRing : MonoBehaviour
         SetInitialPosition();
     }
 
+    private void OnEnable()
+    {
+        rotateAction?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        rotateAction?.Disable();
+    }
+
     private void Update()
     {
-        if (centerPoint == null) return;
-
         UpdateCenterPosition();
 
         float input = GetRotationInput();
+
         if (Mathf.Abs(input) > 0.01f)
         {
             currentAngle += input * rotationSpeed * Time.deltaTime;
@@ -54,6 +75,22 @@ public class CameraMovementRing : MonoBehaviour
             currentAngle, currentAngle, ref angleVelocity, smoothTime);
 
         UpdateCameraPosition(smoothedAngle);
+    }
+
+    private float GetRotationInput()
+    {
+        float input = 0f;
+        var keyboard = Keyboard.current;
+
+        if (keyboard == null) return 0f;
+
+        if (keyboard.leftArrowKey.isPressed || keyboard.aKey.isPressed)
+            input += 1f;
+
+        if (keyboard.rightArrowKey.isPressed || keyboard.dKey.isPressed)
+            input -= 1f;
+
+        return input;
     }
 
     private void UpdateCenterPosition()
@@ -67,25 +104,6 @@ public class CameraMovementRing : MonoBehaviour
         currentAngle = 0f;
         transform.position = CalculatePosition(0f);
         LookAtCenter();
-    }
-
-    private float GetRotationInput()
-    {
-        float input = 0f;
-
-        if (useArrowKeys)
-        {
-            if (Input.GetKey(KeyCode.LeftArrow)) input += 1f;
-            if (Input.GetKey(KeyCode.RightArrow)) input -= 1f;
-        }
-
-        if (useADKeys)
-        {
-            if (Input.GetKey(KeyCode.A)) input += 1f;
-            if (Input.GetKey(KeyCode.D)) input -= 1f;
-        }
-
-        return input;
     }
 
     private void UpdateCameraPosition(float angle)
@@ -132,7 +150,6 @@ public class CameraMovementRing : MonoBehaviour
         Vector3 drawCenter = GetDrawCenter();
         float alpha = selected ? 1f : 0.3f;
 
-        // Рисуем круг
         Color circleColor = circleSettings.gizmoColor;
         circleColor.a = alpha;
         Gizmos.color = circleColor;
@@ -142,11 +159,9 @@ public class CameraMovementRing : MonoBehaviour
 
         if (selected)
         {
-            // Центр
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(drawCenter, 0.5f);
 
-            // Линия к камере
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(drawCenter + Vector3.up * cameraHeight, transform.position);
         }

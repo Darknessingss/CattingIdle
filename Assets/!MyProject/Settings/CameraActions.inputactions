@@ -1,0 +1,80 @@
+{
+    "version": 1,
+    "name": "CameraActions",
+    "maps": [
+        {
+            "name": "Camera",
+            "id": "31d19c7c-b56a-4a22-ad0c-69ffbc67d407",
+            "actions": [
+                {
+                    "name": "New action1",
+                    "type": "Value",
+                    "id": "a1eae26b-2f7d-43b6-9df1-d301f6faeeaf",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6c047aa0-095a-4f9b-bbee-6a863f890b5f",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";CameraController",
+                    "action": "New action1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92008a3f-9e52-43a8-b0ed-2420b2ca5c14",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";CameraController",
+                    "action": "New action1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "571c422a-066a-463d-a568-b912b7b45233",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";CameraController",
+                    "action": "New action1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5499253a-518e-421d-873d-1016c78c9eef",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";CameraController",
+                    "action": "New action1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "CameraController",
+            "bindingGroup": "CameraController",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
