@@ -925,6 +925,7 @@ GameObject:
   - component: {fileID: 375233071}
   - component: {fileID: 375233070}
   - component: {fileID: 375233072}
+  - component: {fileID: 375233073}
   m_Layer: 0
   m_Name: GameManagerSettings
   m_TagString: Untagged
@@ -988,6 +989,22 @@ MonoBehaviour:
   - "\u0416\u0438\u0440\u0430\u0444"
   - "\u0417\u0435\u0431\u0440\u0430"
   - "\u041E\u043B\u0435\u043D\u044C"
+--- !u!114 &375233073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375233069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d043975d5aaadb44594a08067b35ab99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sunlight: {fileID: 1078721383}
+  dayColor: {r: 1, g: 1, b: 1, a: 1}
+  nightColor: {r: 0.1538804, g: 0.16982205, b: 0.3584906, a: 1}
+  cycleDuration: 60
 --- !u!1001 &421762281
 PrefabInstance:
   m_ObjectHideFlags: 0

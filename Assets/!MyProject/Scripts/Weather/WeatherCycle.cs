@@ -2,15 +2,27 @@ using UnityEngine;
 
 public class WeatherCycle : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private Light sunlight;
+
+    [SerializeField] private Color dayColor = Color.white;
+    [SerializeField] private Color nightColor = Color.black;
+
+    [SerializeField] private float cycleDuration = 60f;
+
+    private float timer = 0f;
+
     void Start()
     {
-        
+        if (sunlight == null)
+            sunlight = GetComponent<Light>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        timer += Time.deltaTime;
+
+        float t = Mathf.PingPong(timer / (cycleDuration / 2), 1f);
+
+        sunlight.color = Color.Lerp(dayColor, nightColor, t);
     }
 }
