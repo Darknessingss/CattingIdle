@@ -7,6 +7,9 @@ public class PanelCharacterInterface : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject statsPanel;
     [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI rarityText;
+    [SerializeField] private TextMeshProUGUI incomeText;
+    [SerializeField] private TextMeshProUGUI incomeIntervalText;
 
     [Header("Settings")]
     [SerializeField] private string animalTag = "Animal";
@@ -43,7 +46,50 @@ public class PanelCharacterInterface : MonoBehaviour
                         animalNameComponent = hitObject.AddComponent<AnimalName>();
                         animalNameComponent.GenerateRandomName(possibleNames);
                     }
-                    nameText.text = animalNameComponent.animalName;
+
+                    MonsterSpawner monsterIncome = hitObject.GetComponent<MonsterSpawner>();
+
+                    string rarityName = animalNameComponent.GetRarityName();
+                    Color rarityColor = animalNameComponent.GetRarityColor();
+                    float multiplier = animalNameComponent.GetMultiplier();
+
+                    if (rarityText != null)
+                    {
+                        rarityText.text = rarityName;
+                        rarityText.color = rarityColor;
+                    }
+
+                    if (nameText != null)
+                    {
+                        nameText.text = animalNameComponent.animalName;
+                        nameText.color = rarityColor;
+                    }
+
+                    if (incomeText != null && monsterIncome != null)
+                    {
+                        incomeText.text = $"{monsterIncome.GetIncome():F0}";
+                    }
+
+                    if (incomeIntervalText != null && monsterIncome != null)
+                    {
+                        float interval = monsterIncome.GetIncomeInterval();
+                        if (interval >= 60f)
+                        {
+                            int minutes = Mathf.RoundToInt(interval / 60f);
+                            incomeIntervalText.text = $"{minutes}/min";
+                        }
+                        else if (interval >= 1f)
+                        {
+                            int seconds = Mathf.RoundToInt(interval);
+                            incomeIntervalText.text = $"{seconds}/sec";
+                        }
+                        else
+                        {
+                            int perSecond = Mathf.RoundToInt(1f / interval);
+                            incomeIntervalText.text = $"{perSecond}/sec";
+                        }
+                    }
+
                     statsPanel.SetActive(true);
                 }
             }
@@ -58,15 +104,5 @@ public class PanelCharacterInterface : MonoBehaviour
             statsPanel.SetActive(false);
             currentHoveredAnimal = null;
         }
-    }
-}
-
-public class AnimalName : MonoBehaviour
-{
-    public string animalName;
-
-    public void GenerateRandomName(string[] possibleNames)
-    {
-        animalName = possibleNames[Random.Range(0, possibleNames.Length)];
     }
 }
