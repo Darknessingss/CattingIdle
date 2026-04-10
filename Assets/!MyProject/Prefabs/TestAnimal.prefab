@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 5439138068857240958}
   - component: {fileID: -7566091131651136044}
   - component: {fileID: -4080422578506324796}
+  - component: {fileID: 6811134500791824047}
   m_Layer: 0
   m_Name: TestAnimal
   m_TagString: Animal
@@ -131,7 +132,7 @@ Transform:
   m_GameObject: {fileID: 7784653174523680552}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.17, y: 0.514, z: 0}
+  m_LocalPosition: {x: -9.988, y: -6.398184, z: 1.0870008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -254,3 +255,17 @@ MonoBehaviour:
   baseIncome: 10
   minIncomeInterval: 1
   maxIncomeInterval: 35
+--- !u!114 &6811134500791824047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7784653174523680552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e18a7c94646f604c8ca7332e1482050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodBalanceText: {fileID: 0}
+  tamingDuration: 2

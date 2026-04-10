@@ -14,14 +14,14 @@ public class SpawnSettings : MonoBehaviour
     [Header("Rarity Settings")]
     [SerializeField]
     private RarityData[] rarities = new RarityData[]
-    {
-        new RarityData { rarityName = "Common", multiplier = 1f, spawnChance = 50f, rarityColor = Color.white },
-        new RarityData { rarityName = "Uncommon", multiplier = 1.2f, spawnChance = 25f, rarityColor = Color.green },
-        new RarityData { rarityName = "Rare", multiplier = 1.5f, spawnChance = 12f, rarityColor = Color.blue },
-        new RarityData { rarityName = "Epic", multiplier = 2f, spawnChance = 8f, rarityColor = Color.magenta },
-        new RarityData { rarityName = "Legendary", multiplier = 3f, spawnChance = 4f, rarityColor = new Color(1f, 0.5f, 0f) },
-        new RarityData { rarityName = "Nightmare", multiplier = 5f, spawnChance = 1f, rarityColor = Color.red }
-    };
+{
+    new RarityData { rarityName = "Common", minMultiplier = 1f, maxMultiplier = 1.2f, spawnChance = 50f, rarityColor = Color.white, requiredFood = 10f },
+    new RarityData { rarityName = "Uncommon", minMultiplier = 1.2f, maxMultiplier = 2f, spawnChance = 25f, rarityColor = Color.green, requiredFood = 20f },
+    new RarityData { rarityName = "Rare", minMultiplier = 1.5f, maxMultiplier = 3f, spawnChance = 12f, rarityColor = Color.blue, requiredFood = 35f },
+    new RarityData { rarityName = "Epic", minMultiplier = 2f, maxMultiplier = 3.5f, spawnChance = 8f, rarityColor = Color.magenta, requiredFood = 50f },
+    new RarityData { rarityName = "Legendary", minMultiplier = 3f, maxMultiplier = 4.5f, spawnChance = 4f, rarityColor = new Color(1f, 0.5f, 0f), requiredFood = 75f },
+    new RarityData { rarityName = "Nightmare", minMultiplier = 5f, maxMultiplier = 6f, spawnChance = 1f, rarityColor = Color.red, requiredFood = 100f }
+};
 
     private float spawnTimer = 0f;
     private int currentMonsters = 0;
@@ -59,15 +59,18 @@ public class SpawnSettings : MonoBehaviour
         MonsterSpawner monsterIncome = newMonster.GetComponent<MonsterSpawner>();
         if (monsterIncome == null)
             monsterIncome = newMonster.AddComponent<MonsterSpawner>();
-
         monsterIncome.Initialize(selectedRarity);
 
         AnimalName animalName = newMonster.GetComponent<AnimalName>();
         if (animalName == null)
             animalName = newMonster.AddComponent<AnimalName>();
-
         animalName.GenerateRandomName(possibleNames);
         animalName.SetRarity(selectedRarity);
+
+        TameableAnimal tameable = newMonster.GetComponent<TameableAnimal>();
+        if (tameable == null)
+            tameable = newMonster.AddComponent<TameableAnimal>();
+        tameable.Initialize(selectedRarity);  // <--- щрн днаюбхрэ
 
         currentMonsters++;
     }
