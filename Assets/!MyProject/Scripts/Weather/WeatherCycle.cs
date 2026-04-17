@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeatherCycle : MonoBehaviour
 {
-    [SerializeField] private Light sunlight;
+    [Header("Light Sources")]
+    [SerializeField] private List<Light> lightSources = new List<Light>();
 
     [Header("Colors")]
     [SerializeField] private Color dayColor = Color.white;
@@ -19,10 +21,13 @@ public class WeatherCycle : MonoBehaviour
 
     void Start()
     {
-        if (sunlight == null)
-            sunlight = GetComponent<Light>();
+        if (lightSources == null || lightSources.Count == 0)
+        {
+            Light[] allLights = FindObjectsByType<Light>(FindObjectsSortMode.None);
+            lightSources = new List<Light>(allLights);
+        }
 
-        sunlight.color = dayColor;
+        SetAllLightsColor(dayColor);
         currentState = DayState.Day;
         stateTimer = 0f;
     }
@@ -43,13 +48,13 @@ public class WeatherCycle : MonoBehaviour
 
             case DayState.TransitionToNight:
                 float t = stateTimer / transitionDuration;
-                sunlight.color = Color.Lerp(dayColor, nightColor, t);
+                SetAllLightsColor(Color.Lerp(dayColor, nightColor, t));
 
                 if (stateTimer >= transitionDuration)
                 {
                     currentState = DayState.Night;
                     stateTimer = 0f;
-                    sunlight.color = nightColor;
+                    SetAllLightsColor(nightColor);
                 }
                 break;
 
@@ -63,15 +68,42 @@ public class WeatherCycle : MonoBehaviour
 
             case DayState.TransitionToDay:
                 float t2 = stateTimer / transitionDuration;
-                sunlight.color = Color.Lerp(nightColor, dayColor, t2);
+                SetAllLightsColor(Color.Lerp(nightColor, dayColor, t2));
 
                 if (stateTimer >= transitionDuration)
                 {
                     currentState = DayState.Day;
                     stateTimer = 0f;
-                    sunlight.color = dayColor;
+                    SetAllLightsColor(dayColor);
                 }
                 break;
+        }
+    }
+
+    private void SetAllLightsColor(Color color)
+    {
+        foreach (Light light in lightSources)
+        {
+            if (light != null)
+            {
+                light.color = color;
+            }
+        }
+    }
+
+    public void AddLightSource(Light newLight)
+    {
+        if (newLight != null && !lightSources.Contains(newLight))
+        {
+            lightSources.Add(newLight);
+        }
+    }
+
+    public void RemoveLightSource(Light lightToRemove)
+    {
+        if (lightSources.Contains(lightToRemove))
+        {
+            lightSources.Remove(lightToRemove);
         }
     }
 }

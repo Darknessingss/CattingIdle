@@ -6,7 +6,7 @@ public class Wallet : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI walletText;
 
-    private float walletMoney = 0f;
+    private float walletMoney = 100f;
 
     public float WalletMoney
     {
@@ -16,7 +16,7 @@ public class Wallet : MonoBehaviour
             walletMoney = value;
             if (walletText != null)
             {
-                walletText.text = $"{walletMoney:F0}";
+                walletText.text = $"{Mathf.RoundToInt(walletMoney)}";
             }
         }
     }
@@ -25,7 +25,7 @@ public class Wallet : MonoBehaviour
     {
         if (walletText != null)
         {
-            walletText.text = $"{walletMoney:F0}";
+            walletText.text = $"{Mathf.RoundToInt(walletMoney)}";
         }
     }
 

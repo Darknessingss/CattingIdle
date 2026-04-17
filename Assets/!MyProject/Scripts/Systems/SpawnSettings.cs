@@ -5,7 +5,7 @@ public class SpawnSettings : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private BoxCollider spawnArea;
     [SerializeField] private GameObject monsterPrefab;
-    [SerializeField] private int maxMonsters = 10;
+    [SerializeField] private int maxSpawnedMonsters = 10;
     [SerializeField] private float spawnInterval = 5f;
 
     [Header("Animal Names")]
@@ -14,17 +14,19 @@ public class SpawnSettings : MonoBehaviour
     [Header("Rarity Settings")]
     [SerializeField]
     private RarityData[] rarities = new RarityData[]
-{
-    new RarityData { rarityName = "Common", minMultiplier = 1f, maxMultiplier = 1.2f, spawnChance = 50f, rarityColor = Color.white, requiredFood = 10f },
-    new RarityData { rarityName = "Uncommon", minMultiplier = 1.2f, maxMultiplier = 2f, spawnChance = 25f, rarityColor = Color.green, requiredFood = 20f },
-    new RarityData { rarityName = "Rare", minMultiplier = 1.5f, maxMultiplier = 3f, spawnChance = 12f, rarityColor = Color.blue, requiredFood = 35f },
-    new RarityData { rarityName = "Epic", minMultiplier = 2f, maxMultiplier = 3.5f, spawnChance = 8f, rarityColor = Color.magenta, requiredFood = 50f },
-    new RarityData { rarityName = "Legendary", minMultiplier = 3f, maxMultiplier = 4.5f, spawnChance = 4f, rarityColor = new Color(1f, 0.5f, 0f), requiredFood = 75f },
-    new RarityData { rarityName = "Nightmare", minMultiplier = 5f, maxMultiplier = 6f, spawnChance = 1f, rarityColor = Color.red, requiredFood = 100f }
-};
+    {
+        new RarityData { rarityName = "Common", minMultiplier = 1f, maxMultiplier = 1.2f, spawnChance = 50f, rarityColor = Color.white, requiredFood = 10f },
+        new RarityData { rarityName = "Uncommon", minMultiplier = 1.2f, maxMultiplier = 2f, spawnChance = 25f, rarityColor = Color.green, requiredFood = 20f },
+        new RarityData { rarityName = "Rare", minMultiplier = 1.5f, maxMultiplier = 3f, spawnChance = 12f, rarityColor = Color.blue, requiredFood = 35f },
+        new RarityData { rarityName = "Epic", minMultiplier = 2f, maxMultiplier = 3.5f, spawnChance = 8f, rarityColor = Color.magenta, requiredFood = 50f },
+        new RarityData { rarityName = "Legendary", minMultiplier = 3f, maxMultiplier = 4.5f, spawnChance = 4f, rarityColor = new Color(1f, 0.5f, 0f), requiredFood = 75f },
+        new RarityData { rarityName = "Nightmare", minMultiplier = 5f, maxMultiplier = 6f, spawnChance = 1f, rarityColor = Color.red, requiredFood = 100f }
+    };
 
     private float spawnTimer = 0f;
-    private int currentMonsters = 0;
+    private int currentSpawnedMonsters = 0;
+    private AnimalLimitManager limitManager;
+    private AnimalInventory animalInventory;
 
     void Start()
     {
@@ -32,13 +34,15 @@ public class SpawnSettings : MonoBehaviour
             spawnArea = GetComponent<BoxCollider>();
 
         spawnTimer = spawnInterval;
+        limitManager = FindFirstObjectByType<AnimalLimitManager>();
+        animalInventory = FindFirstObjectByType<AnimalInventory>();
     }
 
     void Update()
     {
         spawnTimer -= Time.deltaTime;
 
-        if (spawnTimer <= 0f && currentMonsters < maxMonsters)
+        if (spawnTimer <= 0f && currentSpawnedMonsters < maxSpawnedMonsters)
         {
             SpawnMonster();
             spawnTimer = spawnInterval;
@@ -51,9 +55,7 @@ public class SpawnSettings : MonoBehaviour
             return;
 
         RarityData selectedRarity = GetRandomRarity();
-
         Vector3 spawnPosition = GetRandomPositionInBox();
-
         GameObject newMonster = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
 
         MonsterSpawner monsterIncome = newMonster.GetComponent<MonsterSpawner>();
@@ -70,9 +72,9 @@ public class SpawnSettings : MonoBehaviour
         TameableAnimal tameable = newMonster.GetComponent<TameableAnimal>();
         if (tameable == null)
             tameable = newMonster.AddComponent<TameableAnimal>();
-        tameable.Initialize(selectedRarity);  // <--- щрн днаюбхрэ
+        tameable.Initialize(selectedRarity, animalInventory);
 
-        currentMonsters++;
+        currentSpawnedMonsters++;
     }
 
     private RarityData GetRandomRarity()
@@ -109,6 +111,6 @@ public class SpawnSettings : MonoBehaviour
 
     public void RemoveMonster()
     {
-        currentMonsters--;
+        currentSpawnedMonsters--;
     }
 }

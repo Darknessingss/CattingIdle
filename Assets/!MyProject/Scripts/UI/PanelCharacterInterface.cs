@@ -21,21 +21,24 @@ public class PanelCharacterInterface : MonoBehaviour
     [Header("Animal Names")]
     [SerializeField] private string[] possibleNames = { "Лев", "Тигр", "Медведь", "Волк", "Лиса", "Заяц", "Слон", "Жираф", "Зебра", "Олень" };
 
-    private Camera mainCamera;
     private GameObject currentHoveredAnimal;
     private float tamingTimer = 0f;
     private bool isTaming = false;
     private TameableAnimal currentTameable;
+    private AnimalLimitManager limitManager;
 
     void Start()
     {
-        mainCamera = Camera.main;
         statsPanel.SetActive(false);
+        limitManager = FindFirstObjectByType<AnimalLimitManager>();
     }
 
     void Update()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Camera currentCamera = GetActiveCamera();
+        if (currentCamera == null) return;
+
+        Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
@@ -70,9 +73,32 @@ public class PanelCharacterInterface : MonoBehaviour
         }
     }
 
+    private Camera GetActiveCamera()
+    {
+        Camera[] allCameras = FindObjectsByType<Camera>(FindObjectsSortMode.None);
+        foreach (Camera cam in allCameras)
+        {
+            if (cam.gameObject.activeInHierarchy && cam.enabled)
+            {
+                return cam;
+            }
+        }
+        return Camera.main;
+    }
+
     private void HandleTaming()
     {
         if (currentTameable == null || currentTameable.IsTamed) return;
+
+        if (limitManager != null && !limitManager.CanTame)
+        {
+            if (tamingProgressText != null)
+            {
+                tamingProgressText.text = "ЛИМИТ ЖИВОТНЫХ ПРЕВЫШЕН!";
+                tamingProgressText.color = Color.red;
+            }
+            return;
+        }
 
         if (Input.GetKeyDown(tameKey))
         {
@@ -221,6 +247,11 @@ public class PanelCharacterInterface : MonoBehaviour
             {
                 tamingProgressText.text = "Приручен";
                 tamingProgressText.color = Color.green;
+            }
+            else if (limitManager != null && !limitManager.CanTame)
+            {
+                tamingProgressText.text = "ЛИМИТ ЖИВОТНЫХ ПРЕВЫШЕН!";
+                tamingProgressText.color = Color.red;
             }
             else if (!isTaming)
             {
