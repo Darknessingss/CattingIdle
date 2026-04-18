@@ -1249,7 +1249,6 @@ GameObject:
   - component: {fileID: 323156014}
   - component: {fileID: 323156013}
   - component: {fileID: 323156012}
-  - component: {fileID: 323156011}
   m_Layer: 0
   m_Name: CameraIsnalCountAnimal
   m_TagString: MainCamera
@@ -1273,21 +1272,6 @@ Transform:
   - {fileID: 1407169604}
   m_Father: {fileID: 1402860122}
   m_LocalEulerAnglesHint: {x: 40.66, y: 0, z: 0}
---- !u!114 &323156011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 323156009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 611f7c80e2a783c41960fd669196be6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animalTag: Animal
-  highlightColor: {r: 0, g: 0, b: 0, a: 1}
-  outlineWidth: 6
 --- !u!114 &323156012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1435,7 +1419,6 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
-  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1593,21 +1576,6 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
---- !u!114 &330585549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 611f7c80e2a783c41960fd669196be6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animalTag: Animal
-  highlightColor: {r: 0, g: 0, b: 0, a: 1}
-  outlineWidth: 6
 --- !u!1 &375233069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1621,6 +1589,7 @@ GameObject:
   - component: {fileID: 375233072}
   - component: {fileID: 375233073}
   - component: {fileID: 375233074}
+  - component: {fileID: 375233079}
   - component: {fileID: 375233075}
   - component: {fileID: 375233076}
   - component: {fileID: 375233077}
@@ -1842,6 +1811,24 @@ MonoBehaviour:
   confirmDeleteButton: {fileID: 1353019401}
   cancelDeleteButton: {fileID: 1510269874}
   uiCanvas: {fileID: 0}
+--- !u!114 &375233079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375233069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 611f7c80e2a783c41960fd669196be6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameras:
+  - {fileID: 323156015}
+  - {fileID: 330585545}
+  animalTag: Animal
+  highlightColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 6
 --- !u!1 &381715096
 GameObject:
   m_ObjectHideFlags: 0

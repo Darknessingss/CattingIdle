@@ -1,23 +1,25 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class OutlineModel : MonoBehaviour
 {
+    [Header("Camera Settings")]
+    [SerializeField] private List<Camera> cameras = new List<Camera>();
+
+    [Header("Outline Settings")]
     [SerializeField] private string animalTag = "Animal";
     [SerializeField] private Color highlightColor = Color.black;
     [SerializeField] private float outlineWidth = 6f;
 
-    private Camera mainCamera;
     private GameObject currentHighlightedAnimal;
     private Outline currentOutline;
 
-    void Start()
-    {
-        mainCamera = Camera.main;
-    }
-
     void Update()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Camera activeCamera = GetActiveCamera();
+        if (activeCamera == null) return;
+
+        Ray ray = activeCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
@@ -28,7 +30,6 @@ public class OutlineModel : MonoBehaviour
                 if (currentHighlightedAnimal != hitObject)
                 {
                     ClearHighlight();
-
                     currentHighlightedAnimal = hitObject;
 
                     if (!hitObject.TryGetComponent(out currentOutline))
@@ -51,6 +52,16 @@ public class OutlineModel : MonoBehaviour
         {
             ClearHighlight();
         }
+    }
+
+    private Camera GetActiveCamera()
+    {
+        foreach (Camera cam in cameras)
+        {
+            if (cam != null && cam.isActiveAndEnabled)
+                return cam;
+        }
+        return Camera.main;
     }
 
     private void ClearHighlight()
