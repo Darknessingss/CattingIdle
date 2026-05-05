@@ -1613,8 +1613,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8bacef247dbcc4ea79e468200691f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PanelPosition: {fileID: 709473873}
-  AnimationDuration: 0.3
+  panelPosition: {fileID: 709473873}
+  animationDuration: 0.3
   hiddenPosition: {x: 2000, y: 0}
 --- !u!4 &375233071
 Transform:
@@ -1681,8 +1681,8 @@ MonoBehaviour:
   - {fileID: 1407169606}
   dayColor: {r: 1, g: 1, b: 1, a: 1}
   nightColor: {r: 0.1538804, g: 0.16982205, b: 0.3584906, a: 1}
-  dayDuration: 300
-  nightDuration: 300
+  dayDuration: 150
+  nightDuration: 150
   transitionDuration: 2
 --- !u!114 &375233074
 MonoBehaviour:
@@ -1710,7 +1710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnArea: {fileID: 514489853}
-  monsterPrefab: {fileID: 7784653174523680552, guid: b77f3ba17ce931f4ba728684972787da, type: 3}
+  monsterPrefab: {fileID: 5280700730704239321, guid: c28deea4e4f58a44b9b26f83f5d6b6a3, type: 3}
   maxSpawnedMonsters: 10
   spawnInterval: 5
   possibleNames:
@@ -1810,7 +1810,6 @@ MonoBehaviour:
   deleteMessageText: {fileID: 381715098}
   confirmDeleteButton: {fileID: 1353019401}
   cancelDeleteButton: {fileID: 1510269874}
-  uiCanvas: {fileID: 0}
 --- !u!114 &375233079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6456,7 +6455,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -146.43652, y: 38.534485}
+  m_AnchoredPosition: {x: -146.43652, y: 38.534424}
   m_SizeDelta: {x: 292.87305, y: 77.06897}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1560020892

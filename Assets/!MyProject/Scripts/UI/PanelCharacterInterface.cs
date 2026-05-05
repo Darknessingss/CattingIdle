@@ -77,12 +77,7 @@ public class PanelCharacterInterface : MonoBehaviour
     {
         Camera[] allCameras = FindObjectsByType<Camera>(FindObjectsSortMode.None);
         foreach (Camera cam in allCameras)
-        {
-            if (cam.gameObject.activeInHierarchy && cam.enabled)
-            {
-                return cam;
-            }
-        }
+            if (cam.gameObject.activeInHierarchy && cam.enabled) return cam;
         return Camera.main;
     }
 
@@ -122,7 +117,6 @@ public class PanelCharacterInterface : MonoBehaviour
         if (isTaming && Input.GetKey(tameKey))
         {
             tamingTimer += Time.deltaTime;
-
             float progress = tamingTimer / tamingDuration;
 
             if (tamingProgressText != null)
@@ -131,16 +125,10 @@ public class PanelCharacterInterface : MonoBehaviour
                 tamingProgressText.color = Color.yellow;
             }
 
-            if (tamingTimer >= tamingDuration)
-            {
-                CompleteTaming();
-            }
+            if (tamingTimer >= tamingDuration) CompleteTaming();
         }
 
-        if (Input.GetKeyUp(tameKey) && isTaming)
-        {
-            CancelTaming();
-        }
+        if (Input.GetKeyUp(tameKey) && isTaming) CancelTaming();
     }
 
     private void CompleteTaming()
@@ -151,10 +139,8 @@ public class PanelCharacterInterface : MonoBehaviour
         {
             currentTameable.AddFood(neededFood);
             currentTameable.CompleteTaming();
-
             isTaming = false;
             tamingTimer = 0f;
-
             UpdateAnimalUI();
             Debug.Log("Животное успешно приручено!");
         }
@@ -184,7 +170,6 @@ public class PanelCharacterInterface : MonoBehaviour
         }
 
         MonsterSpawner monsterIncome = currentHoveredAnimal.GetComponent<MonsterSpawner>();
-
         string rarityName = animalNameComponent.GetRarityName();
         Color rarityColor = animalNameComponent.GetRarityColor();
 
@@ -210,35 +195,20 @@ public class PanelCharacterInterface : MonoBehaviour
         {
             float interval = monsterIncome.GetIncomeInterval();
             if (interval >= 60f)
-            {
-                int minutes = Mathf.RoundToInt(interval / 60f);
-                incomeIntervalText.text = $"{minutes}/min";
-            }
+                incomeIntervalText.text = $"{Mathf.RoundToInt(interval / 60f)}/min";
             else if (interval >= 1f)
-            {
-                int seconds = Mathf.RoundToInt(interval);
-                incomeIntervalText.text = $"{seconds}/sec";
-            }
+                incomeIntervalText.text = $"{Mathf.RoundToInt(interval)}/sec";
             else
-            {
-                int perSecond = Mathf.RoundToInt(1f / interval);
-                incomeIntervalText.text = $"{perSecond}/sec";
-            }
+                incomeIntervalText.text = $"{Mathf.RoundToInt(1f / interval)}/sec";
             incomeIntervalText.color = Color.white;
         }
 
         if (requiredFoodText != null && currentTameable != null)
         {
             if (currentTameable.IsTamed)
-            {
                 requiredFoodText.text = "";
-            }
             else
-            {
-                float remaining = currentTameable.GetRemainingFood();
-                requiredFoodText.text = $"Нужно еды: {remaining}";
-                requiredFoodText.color = Color.white;
-            }
+                requiredFoodText.text = $"Нужно еды: {currentTameable.GetRemainingFood()}";
         }
 
         if (tamingProgressText != null && currentTameable != null)
@@ -264,20 +234,12 @@ public class PanelCharacterInterface : MonoBehaviour
     private bool CheckFoodAvailability(float requiredAmount)
     {
         FoodSystem foodSystem = FindFirstObjectByType<FoodSystem>();
-        if (foodSystem != null)
-        {
-            return foodSystem.GetCurrentFood() >= requiredAmount;
-        }
-        return false;
+        return foodSystem != null && foodSystem.GetCurrentFood() >= requiredAmount;
     }
 
     private bool ConsumeFood(float amount)
     {
         FoodSystem foodSystem = FindFirstObjectByType<FoodSystem>();
-        if (foodSystem != null)
-        {
-            return foodSystem.ConsumeFood(amount);
-        }
-        return false;
+        return foodSystem != null && foodSystem.ConsumeFood(amount);
     }
 }

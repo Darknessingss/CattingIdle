@@ -18,30 +18,12 @@ public class AnimalName : MonoBehaviour
         rarityColor = rarity.rarityColor;
         multiplier = rarity.multiplier;
 
-        ApplyRarityColor();
-    }
-
-    private void ApplyRarityColor()
-    {
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
-        {
             renderer.material.color = rarityColor;
-        }
     }
 
-    public string GetRarityName()
-    {
-        return rarityName;
-    }
-
-    public Color GetRarityColor()
-    {
-        return rarityColor;
-    }
-
-    public float GetMultiplier()
-    {
-        return multiplier;
-    }
+    public string GetRarityName() => rarityName;
+    public Color GetRarityColor() => rarityColor;
+    public float GetMultiplier() => multiplier;
 }

@@ -3,44 +3,36 @@ using UnityEngine;
 
 public class Wallet : MonoBehaviour
 {
-    [Header("UI")]
     [SerializeField] private TextMeshProUGUI walletText;
-
     private float walletMoney = 100f;
 
-    public float WalletMoney
+    void Start()
     {
-        get => walletMoney;
-        private set
-        {
-            walletMoney = value;
-            if (walletText != null)
-            {
-                walletText.text = $"{Mathf.RoundToInt(walletMoney)}";
-            }
-        }
+        UpdateUI();
     }
 
-    void Start()
+    public void AddMoney(float amount)
+    {
+        walletMoney += amount;
+        UpdateUI();
+    }
+
+    public bool SpendMoney(float amount)
+    {
+        if (walletMoney >= amount)
+        {
+            walletMoney -= amount;
+            UpdateUI();
+            return true;
+        }
+        return false;
+    }
+
+    private void UpdateUI()
     {
         if (walletText != null)
         {
             walletText.text = $"{Mathf.RoundToInt(walletMoney)}";
         }
-    }
-
-    public void AddMoney(float amount)
-    {
-        WalletMoney += amount;
-    }
-
-    public bool SpendMoney(float amount)
-    {
-        if (WalletMoney >= amount)
-        {
-            WalletMoney -= amount;
-            return true;
-        }
-        return false;
     }
 }

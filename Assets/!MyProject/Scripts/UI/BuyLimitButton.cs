@@ -4,12 +4,9 @@ using UnityEngine.UI;
 
 public class BuyLimitButton : MonoBehaviour
 {
-    [Header("Purchase Settings")]
     [SerializeField] private int limitIncrease = 1;
     [SerializeField] private int price = 100;
     [SerializeField] private int maxTotalLimit = 20;
-
-    [Header("UI References")]
     [SerializeField] private Button buyButton;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI limitText;
@@ -56,8 +53,6 @@ public class BuyLimitButton : MonoBehaviour
     private void UpdateLimitText()
     {
         if (limitText != null && limitManager != null)
-        {
             limitText.text = $"+{limitIncrease}";
-        }
     }
 }

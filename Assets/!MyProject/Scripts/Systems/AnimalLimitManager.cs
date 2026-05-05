@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class AnimalLimitManager : MonoBehaviour
 {
-    [Header("Limits Settings")]
     [SerializeField] private int maxTamedAnimals = 10;
-
-    [Header("UI")]
     [SerializeField] private TextMeshProUGUI tamedCountText;
 
-    private int currentTamedCount = 0;
+    private int currentTamedCount;
 
     public int MaxTamedAnimals => maxTamedAnimals;
     public int CurrentTamedCount => currentTamedCount;
@@ -18,14 +15,10 @@ public class AnimalLimitManager : MonoBehaviour
 
     public event Action OnTamedCountChanged;
 
-    void Start()
-    {
-        UpdateUI();
-    }
+    void Start() => UpdateUI();
 
     public bool TryAddTamedAnimal()
     {
-
         if (currentTamedCount < maxTamedAnimals)
         {
             currentTamedCount++;
@@ -34,11 +27,9 @@ public class AnimalLimitManager : MonoBehaviour
             Debug.Log($"Приручено животных: {currentTamedCount}/{maxTamedAnimals}");
             return true;
         }
-        else
-        {
-            Debug.Log($"Достигнут лимит прирученных животных! Максимум: {maxTamedAnimals}");
-            return false;
-        }
+
+        Debug.Log($"Достигнут лимит! Максимум: {maxTamedAnimals}");
+        return false;
     }
 
     public void RemoveTamedAnimal()
@@ -56,19 +47,14 @@ public class AnimalLimitManager : MonoBehaviour
     {
         maxTamedAnimals += amount;
         UpdateUI();
-        Debug.Log($"Максимальный лимит увеличен до {maxTamedAnimals}");
+        Debug.Log($"Лимит увеличен до {maxTamedAnimals}");
     }
 
     private void UpdateUI()
     {
-        if (tamedCountText != null)
-        {
-            tamedCountText.text = $"{currentTamedCount}/{maxTamedAnimals}";
+        if (tamedCountText == null) return;
 
-            if (currentTamedCount >= maxTamedAnimals)
-                tamedCountText.color = Color.red;
-            else
-                tamedCountText.color = Color.white;
-        }
+        tamedCountText.text = $"{currentTamedCount}/{maxTamedAnimals}";
+        tamedCountText.color = currentTamedCount >= maxTamedAnimals ? Color.red : Color.white;
     }
 }

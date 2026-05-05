@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class FoodSystem : MonoBehaviour
 {
-    [Header("Food Settings")]
     [SerializeField] private float startingFood = 100f;
     [SerializeField] private TextMeshProUGUI foodText;
 
@@ -15,10 +14,7 @@ public class FoodSystem : MonoBehaviour
         UpdateFoodUI();
     }
 
-    public float GetCurrentFood()
-    {
-        return currentFood;
-    }
+    public float GetCurrentFood() => currentFood;
 
     public void AddFood(float amount)
     {
@@ -40,8 +36,6 @@ public class FoodSystem : MonoBehaviour
     private void UpdateFoodUI()
     {
         if (foodText != null)
-        {
             foodText.text = $"{Mathf.RoundToInt(currentFood)}";
-        }
     }
 }

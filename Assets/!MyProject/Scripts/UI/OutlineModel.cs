@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class OutlineModel : MonoBehaviour
 {
-    [Header("Camera Settings")]
     [SerializeField] private List<Camera> cameras = new List<Camera>();
-
-    [Header("Outline Settings")]
     [SerializeField] private string animalTag = "Animal";
     [SerializeField] private Color highlightColor = Color.black;
     [SerializeField] private float outlineWidth = 6f;
@@ -33,9 +30,7 @@ public class OutlineModel : MonoBehaviour
                     currentHighlightedAnimal = hitObject;
 
                     if (!hitObject.TryGetComponent(out currentOutline))
-                    {
                         currentOutline = hitObject.AddComponent<Outline>();
-                    }
 
                     currentOutline.OutlineMode = Outline.Mode.OutlineAll;
                     currentOutline.OutlineColor = highlightColor;
@@ -57,10 +52,7 @@ public class OutlineModel : MonoBehaviour
     private Camera GetActiveCamera()
     {
         foreach (Camera cam in cameras)
-        {
-            if (cam != null && cam.isActiveAndEnabled)
-                return cam;
-        }
+            if (cam != null && cam.isActiveAndEnabled) return cam;
         return Camera.main;
     }
 
@@ -74,8 +66,5 @@ public class OutlineModel : MonoBehaviour
         currentHighlightedAnimal = null;
     }
 
-    void OnDestroy()
-    {
-        ClearHighlight();
-    }
+    void OnDestroy() => ClearHighlight();
 }

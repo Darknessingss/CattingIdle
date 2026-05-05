@@ -1,26 +1,20 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Rendering;
-using Microsoft.Win32.SafeHandles;
-using UnityEngine.UIElements;
-
 
 public class ShopManagerUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform PanelPosition;
-    [SerializeField] private float AnimationDuration = 0.3f;
+    [SerializeField] private RectTransform panelPosition;
+    [SerializeField] private float animationDuration = 0.3f;
     [SerializeField] private Vector2 hiddenPosition = new Vector2(2000, 0);
 
     private Vector2 showPosition;
-    private bool isOpen = false;
+    private bool isOpen;
     private Coroutine currentAnimation;
-
-
 
     private void Start()
     {
-        showPosition = PanelPosition.anchoredPosition;
-        PanelPosition.anchoredPosition = hiddenPosition;
+        showPosition = panelPosition.anchoredPosition;
+        panelPosition.anchoredPosition = hiddenPosition;
     }
 
     private void Update()
@@ -31,12 +25,11 @@ public class ShopManagerUI : MonoBehaviour
 
     public void ToggleShop()
     {
-        if(isOpen)
+        if (isOpen)
             ClosePanel();
         else
             OpenPanel();
     }
-
 
     public void ClosePanel()
     {
@@ -49,11 +42,9 @@ public class ShopManagerUI : MonoBehaviour
         currentAnimation = StartCoroutine(MovePanel(hiddenPosition));
     }
 
-
     private void OpenPanel()
     {
         if (isOpen) return;
-
 
         if (currentAnimation != null)
             StopCoroutine(currentAnimation);
@@ -62,24 +53,21 @@ public class ShopManagerUI : MonoBehaviour
         currentAnimation = StartCoroutine(MovePanel(showPosition));
     }
 
-        
-    private IEnumerator MovePanel(Vector2 targetPosition)
+    private IEnumerator MovePanel(Vector2 target)
     {
-        Vector2 startPosition = PanelPosition.anchoredPosition;
-        float timestarted = 0f;
+        Vector2 start = panelPosition.anchoredPosition;
+        float elapsed = 0f;
 
-        while (timestarted < AnimationDuration)
+        while (elapsed < animationDuration)
         {
-            timestarted += Time.deltaTime;
-            float t = timestarted / AnimationDuration;
+            elapsed += Time.deltaTime;
+            float t = elapsed / animationDuration;
             t = Mathf.SmoothStep(0, 1, t);
-
-            PanelPosition.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, t);
-
+            panelPosition.anchoredPosition = Vector2.Lerp(start, target, t);
             yield return null;
         }
 
-        PanelPosition.anchoredPosition = targetPosition;
+        panelPosition.anchoredPosition = target;
         currentAnimation = null;
     }
 }

@@ -2,16 +2,12 @@ using UnityEngine;
 
 public class SpawnSettings : MonoBehaviour
 {
-    [Header("Spawn Settings")]
     [SerializeField] private BoxCollider spawnArea;
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private int maxSpawnedMonsters = 10;
     [SerializeField] private float spawnInterval = 5f;
-
-    [Header("Animal Names")]
     [SerializeField] private string[] possibleNames = { "Лев", "Тигр", "Медведь", "Волк", "Лиса", "Заяц", "Слон", "Жираф", "Зебра", "Олень" };
 
-    [Header("Rarity Settings")]
     [SerializeField]
     private RarityData[] rarities = new RarityData[]
     {
@@ -23,9 +19,8 @@ public class SpawnSettings : MonoBehaviour
         new RarityData { rarityName = "Nightmare", minMultiplier = 5f, maxMultiplier = 6f, spawnChance = 1f, rarityColor = Color.red, requiredFood = 100f }
     };
 
-    private float spawnTimer = 0f;
-    private int currentSpawnedMonsters = 0;
-    private AnimalLimitManager limitManager;
+    private float spawnTimer;
+    private int currentSpawnedMonsters;
     private AnimalInventory animalInventory;
 
     void Start()
@@ -34,7 +29,6 @@ public class SpawnSettings : MonoBehaviour
             spawnArea = GetComponent<BoxCollider>();
 
         spawnTimer = spawnInterval;
-        limitManager = FindFirstObjectByType<AnimalLimitManager>();
         animalInventory = FindFirstObjectByType<AnimalInventory>();
     }
 
@@ -51,12 +45,10 @@ public class SpawnSettings : MonoBehaviour
 
     private void SpawnMonster()
     {
-        if (monsterPrefab == null || spawnArea == null)
-            return;
+        if (monsterPrefab == null || spawnArea == null) return;
 
         RarityData selectedRarity = GetRandomRarity();
-        Vector3 spawnPosition = GetRandomPositionInBox();
-        GameObject newMonster = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
+        GameObject newMonster = Instantiate(monsterPrefab, GetRandomPositionInBox(), Quaternion.identity);
 
         MonsterSpawner monsterIncome = newMonster.GetComponent<MonsterSpawner>();
         if (monsterIncome == null)
@@ -81,9 +73,7 @@ public class SpawnSettings : MonoBehaviour
     {
         float totalChance = 0f;
         foreach (var rarity in rarities)
-        {
             totalChance += rarity.spawnChance;
-        }
 
         float randomValue = Random.Range(0f, totalChance);
         float currentChance = 0f;
@@ -92,9 +82,7 @@ public class SpawnSettings : MonoBehaviour
         {
             currentChance += rarity.spawnChance;
             if (randomValue <= currentChance)
-            {
                 return rarity;
-            }
         }
 
         return rarities[0];
@@ -103,14 +91,12 @@ public class SpawnSettings : MonoBehaviour
     private Vector3 GetRandomPositionInBox()
     {
         Bounds bounds = spawnArea.bounds;
-        float x = Random.Range(bounds.min.x, bounds.max.x);
-        float y = Random.Range(bounds.min.y, bounds.max.y);
-        float z = Random.Range(bounds.min.z, bounds.max.z);
-        return new Vector3(x, y, z);
+        return new Vector3(
+            Random.Range(bounds.min.x, bounds.max.x),
+            Random.Range(bounds.min.y, bounds.max.y),
+            Random.Range(bounds.min.z, bounds.max.z)
+        );
     }
 
-    public void RemoveMonster()
-    {
-        currentSpawnedMonsters--;
-    }
+    public void RemoveMonster() => currentSpawnedMonsters--;
 }

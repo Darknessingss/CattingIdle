@@ -10,13 +10,5 @@ public class RarityData
     public Color rarityColor = Color.white;
     public float requiredFood = 10f;
 
-    public float multiplier
-    {
-        get
-        {
-            if (minMultiplier == maxMultiplier)
-                return minMultiplier;
-            return Random.Range(minMultiplier, maxMultiplier);
-        }
-    }
+    public float multiplier => minMultiplier == maxMultiplier ? minMultiplier : Random.Range(minMultiplier, maxMultiplier);
 }

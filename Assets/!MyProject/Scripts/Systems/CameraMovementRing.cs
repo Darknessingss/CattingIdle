@@ -12,19 +12,12 @@ public class CameraMovementRing : MonoBehaviour
         public bool showGizmo = true;
     }
 
-    [Header("Настройки цели")]
     [SerializeField] private Transform centerPoint;
     [SerializeField] private Vector3 centerOffset = Vector3.zero;
-
-    [Header("Настройки камеры")]
     [SerializeField] private float cameraHeight = 10f;
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private float smoothTime = 0.1f;
-
-    [Header("Настройки круга")]
-    [SerializeField] private CircleSettings circleSettings = new();
-
-    [Header("Input System")]
+    [SerializeField] private CircleSettings circleSettings = new CircleSettings();
     [SerializeField] private InputAction rotateAction;
 
     private float currentAngle;
@@ -47,50 +40,35 @@ public class CameraMovementRing : MonoBehaviour
     private void Start()
     {
         UpdateCenterPosition();
-        SetInitialPosition();
+        currentAngle = 0f;
+        transform.position = CalculatePosition(0f);
+        LookAtCenter();
     }
 
-    private void OnEnable()
-    {
-        rotateAction?.Enable();
-    }
-
-    private void OnDisable()
-    {
-        rotateAction?.Disable();
-    }
+    private void OnEnable() => rotateAction?.Enable();
+    private void OnDisable() => rotateAction?.Disable();
 
     private void Update()
     {
         UpdateCenterPosition();
 
-        float input = GetRotationInput();
+        float input = 0f;
+        Keyboard keyboard = Keyboard.current;
 
-        if (Mathf.Abs(input) > 0.01f)
+        if (keyboard != null)
         {
-            currentAngle += input * rotationSpeed * Time.deltaTime;
+            if (keyboard.leftArrowKey.isPressed || keyboard.aKey.isPressed) input += 1f;
+            if (keyboard.rightArrowKey.isPressed || keyboard.dKey.isPressed) input -= 1f;
         }
 
-        float smoothedAngle = Mathf.SmoothDampAngle(
-            currentAngle, currentAngle, ref angleVelocity, smoothTime);
+        if (Mathf.Abs(input) > 0.01f)
+            currentAngle += input * rotationSpeed * Time.deltaTime;
 
-        UpdateCameraPosition(smoothedAngle);
-    }
+        float smoothedAngle = Mathf.SmoothDampAngle(currentAngle, currentAngle, ref angleVelocity, smoothTime);
 
-    private float GetRotationInput()
-    {
-        float input = 0f;
-        var keyboard = Keyboard.current;
-
-        if (keyboard == null) return 0f;
-
-        if (keyboard.leftArrowKey.isPressed || keyboard.aKey.isPressed)
-            input += 1f;
-
-        if (keyboard.rightArrowKey.isPressed || keyboard.dKey.isPressed)
-            input -= 1f;
-
-        return input;
+        Vector3 targetPosition = CalculatePosition(smoothedAngle);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * LerpMultiplier);
+        LookAtCenter();
     }
 
     private void UpdateCenterPosition()
@@ -99,31 +77,13 @@ public class CameraMovementRing : MonoBehaviour
             centerPosition = centerPoint.position + centerOffset;
     }
 
-    private void SetInitialPosition()
-    {
-        currentAngle = 0f;
-        transform.position = CalculatePosition(0f);
-        LookAtCenter();
-    }
-
-    private void UpdateCameraPosition(float angle)
-    {
-        Vector3 newPosition = CalculatePosition(angle);
-        transform.position = Vector3.Lerp(
-            transform.position, newPosition, Time.deltaTime * LerpMultiplier);
-        LookAtCenter();
-    }
-
     private Vector3 CalculatePosition(float angleDegrees)
     {
         float angleRad = angleDegrees * Mathf.Deg2Rad;
-        float sin = Mathf.Sin(angleRad);
-        float cos = Mathf.Cos(angleRad);
-
         return new Vector3(
-            centerPosition.x + sin * circleSettings.radius,
+            centerPosition.x + Mathf.Sin(angleRad) * circleSettings.radius,
             centerPosition.y + cameraHeight,
-            centerPosition.z + cos * circleSettings.radius);
+            centerPosition.z + Mathf.Cos(angleRad) * circleSettings.radius);
     }
 
     private void LookAtCenter()
@@ -132,68 +92,24 @@ public class CameraMovementRing : MonoBehaviour
             transform.LookAt(centerPosition);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        DrawGizmos(true);
-    }
-
     private void OnDrawGizmos()
-    {
-        if (!circleSettings.showGizmo) return;
-        DrawGizmos(false);
-    }
-
-    private void DrawGizmos(bool selected)
     {
         if (!circleSettings.showGizmo || centerPoint == null) return;
 
-        Vector3 drawCenter = GetDrawCenter();
-        float alpha = selected ? 1f : 0.3f;
+        Vector3 drawCenter = Application.isPlaying ? centerPosition : centerPoint.position + centerOffset;
+        Vector3 circleCenter = drawCenter + Vector3.up * cameraHeight;
 
-        Color circleColor = circleSettings.gizmoColor;
-        circleColor.a = alpha;
-        Gizmos.color = circleColor;
+        Gizmos.color = circleSettings.gizmoColor;
 
-        DrawCircle(drawCenter + Vector3.up * cameraHeight,
-                  circleSettings.radius, circleSettings.segments);
+        Vector3 prevPoint = circleCenter + new Vector3(Mathf.Sin(0) * circleSettings.radius, 0, Mathf.Cos(0) * circleSettings.radius);
 
-        if (selected)
+        for (int i = 1; i <= circleSettings.segments; i++)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(drawCenter, 0.5f);
-
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(drawCenter + Vector3.up * cameraHeight, transform.position);
+            float t = (float)i / circleSettings.segments;
+            float angle = t * Mathf.PI * 2f;
+            Vector3 point = circleCenter + new Vector3(Mathf.Sin(angle) * circleSettings.radius, 0, Mathf.Cos(angle) * circleSettings.radius);
+            Gizmos.DrawLine(prevPoint, point);
+            prevPoint = point;
         }
-    }
-
-    private Vector3 GetDrawCenter()
-    {
-        return Application.isPlaying ?
-            centerPosition :
-            (centerPoint != null ? centerPoint.position + centerOffset : Vector3.zero);
-    }
-
-    private void DrawCircle(Vector3 center, float radius, int segments)
-    {
-        if (segments < 3) return;
-
-        Vector3 previousPoint = GetCirclePoint(center, radius, 0);
-
-        for (int i = 1; i <= segments; i++)
-        {
-            Vector3 currentPoint = GetCirclePoint(center, radius, (float)i / segments);
-            Gizmos.DrawLine(previousPoint, currentPoint);
-            previousPoint = currentPoint;
-        }
-    }
-
-    private Vector3 GetCirclePoint(Vector3 center, float radius, float t)
-    {
-        float angle = t * Mathf.PI * 2f;
-        return new Vector3(
-            center.x + Mathf.Sin(angle) * radius,
-            center.y,
-            center.z + Mathf.Cos(angle) * radius);
     }
 }
