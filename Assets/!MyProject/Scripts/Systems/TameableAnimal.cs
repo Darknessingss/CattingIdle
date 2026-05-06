@@ -14,12 +14,12 @@ public class TameableAnimal : MonoBehaviour
     public bool IsTamed => isTamed;
     public float RemainingFood => requiredFood - currentFoodSpent;
 
-    public void Initialize(RarityData rarityRef, AnimalInventory inventoryRef)
+    public void Initialize(RarityData rarityRef, AnimalInventory inventoryRef, AnimalLimitManager limit)
     {
         requiredFood = rarityRef.requiredFood;
         currentFoodSpent = 0f;
         animalInventory = inventoryRef;
-        limitManager = FindFirstObjectByType<AnimalLimitManager>();
+        limitManager = limit;
     }
 
     void Start()

@@ -7,6 +7,8 @@ public class SpawnSettings : MonoBehaviour
     [SerializeField] private int maxSpawnedMonsters = 10;
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private string[] possibleNames = { "Лев", "Тигр", "Медведь", "Волк", "Лиса", "Заяц", "Слон", "Жираф", "Зебра", "Олень" };
+    [SerializeField] private AnimalLimitManager _limitManager;
+    [SerializeField] private AnimalInventory animalInventory;
 
     [SerializeField]
     private RarityData[] rarities = new RarityData[]
@@ -21,7 +23,6 @@ public class SpawnSettings : MonoBehaviour
 
     private float spawnTimer;
     private int currentSpawnedMonsters;
-    private AnimalInventory animalInventory;
 
     void Start()
     {
@@ -29,7 +30,6 @@ public class SpawnSettings : MonoBehaviour
             spawnArea = GetComponent<BoxCollider>();
 
         spawnTimer = spawnInterval;
-        animalInventory = FindFirstObjectByType<AnimalInventory>();
     }
 
     void Update()
@@ -64,7 +64,7 @@ public class SpawnSettings : MonoBehaviour
         TameableAnimal tameable = newMonster.GetComponent<TameableAnimal>();
         if (tameable == null)
             tameable = newMonster.AddComponent<TameableAnimal>();
-        tameable.Initialize(selectedRarity, animalInventory);
+        tameable.Initialize(selectedRarity, animalInventory, _limitManager);
 
         currentSpawnedMonsters++;
     }
