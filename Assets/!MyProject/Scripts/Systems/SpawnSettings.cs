@@ -13,12 +13,12 @@ public class SpawnSettings : MonoBehaviour
     [SerializeField]
     private RarityData[] rarities = new RarityData[]
     {
-        new RarityData { rarityName = "Common", minMultiplier = 1f, maxMultiplier = 1.2f, spawnChance = 50f, rarityColor = Color.white, requiredFood = 10f },
-        new RarityData { rarityName = "Uncommon", minMultiplier = 1.2f, maxMultiplier = 2f, spawnChance = 25f, rarityColor = Color.green, requiredFood = 20f },
-        new RarityData { rarityName = "Rare", minMultiplier = 1.5f, maxMultiplier = 3f, spawnChance = 12f, rarityColor = Color.blue, requiredFood = 35f },
-        new RarityData { rarityName = "Epic", minMultiplier = 2f, maxMultiplier = 3.5f, spawnChance = 8f, rarityColor = Color.magenta, requiredFood = 50f },
-        new RarityData { rarityName = "Legendary", minMultiplier = 3f, maxMultiplier = 4.5f, spawnChance = 4f, rarityColor = new Color(1f, 0.5f, 0f), requiredFood = 75f },
-        new RarityData { rarityName = "Nightmare", minMultiplier = 5f, maxMultiplier = 6f, spawnChance = 1f, rarityColor = Color.red, requiredFood = 100f }
+        new RarityData { rarityName = "Common", minMultiplier = 1f, maxMultiplier = 1.2f, spawnChance = 70f, rarityColor = Color.white, minRequiredFood = 8, maxRequiredFood = 20 },
+        new RarityData { rarityName = "Uncommon", minMultiplier = 1.2f, maxMultiplier = 1.8f, spawnChance = 35f, rarityColor = Color.green, minRequiredFood = 25, maxRequiredFood = 40 },
+        new RarityData { rarityName = "Rare", minMultiplier = 1.8f, maxMultiplier = 3f, spawnChance = 15f, rarityColor = Color.blue, minRequiredFood = 45, maxRequiredFood = 100 },
+        new RarityData { rarityName = "Epic", minMultiplier = 2.5f, maxMultiplier = 4f, spawnChance = 8f, rarityColor = Color.magenta, minRequiredFood = 75, maxRequiredFood = 150 },
+        new RarityData { rarityName = "Legendary", minMultiplier = 3.5f, maxMultiplier = 5f, spawnChance = 3f, rarityColor = new Color(1f, 0.5f, 0f), minRequiredFood = 125, maxRequiredFood = 250 },
+        new RarityData { rarityName = "Nightmare", minMultiplier = 6f, maxMultiplier = 10f, spawnChance = 0.1f, rarityColor = Color.red, minRequiredFood = 600, maxRequiredFood = 1000 }
     };
 
     private float spawnTimer;
@@ -48,7 +48,10 @@ public class SpawnSettings : MonoBehaviour
         if (monsterPrefab == null || spawnArea == null) return;
 
         RarityData selectedRarity = GetRandomRarity();
-        GameObject newMonster = Instantiate(monsterPrefab, GetRandomPositionInBox(), Quaternion.identity);
+
+        selectedRarity.requiredFood = Random.Range(selectedRarity.minRequiredFood, selectedRarity.maxRequiredFood + 1);
+
+        GameObject newMonster = Instantiate(monsterPrefab, GetRandomPositionInBox(), monsterPrefab.transform.rotation);
 
         MonsterSpawner monsterIncome = newMonster.GetComponent<MonsterSpawner>();
         if (monsterIncome == null)
@@ -82,7 +85,19 @@ public class SpawnSettings : MonoBehaviour
         {
             currentChance += rarity.spawnChance;
             if (randomValue <= currentChance)
-                return rarity;
+            {
+                RarityData copy = new RarityData
+                {
+                    rarityName = rarity.rarityName,
+                    minMultiplier = rarity.minMultiplier,
+                    maxMultiplier = rarity.maxMultiplier,
+                    spawnChance = rarity.spawnChance,
+                    rarityColor = rarity.rarityColor,
+                    minRequiredFood = rarity.minRequiredFood,
+                    maxRequiredFood = rarity.maxRequiredFood
+                };
+                return copy;
+            }
         }
 
         return rarities[0];

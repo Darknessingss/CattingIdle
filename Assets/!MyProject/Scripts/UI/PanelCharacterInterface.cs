@@ -97,7 +97,7 @@ public class PanelCharacterInterface : MonoBehaviour
 
         if (Input.GetKeyDown(tameKey))
         {
-            float neededFood = currentTameable.GetRemainingFood();
+            int neededFood = currentTameable.GetRemainingFood();
             if (CheckFoodAvailability(neededFood))
             {
                 isTaming = true;
@@ -133,7 +133,7 @@ public class PanelCharacterInterface : MonoBehaviour
 
     private void CompleteTaming()
     {
-        float neededFood = currentTameable.GetRemainingFood();
+        int neededFood = currentTameable.GetRemainingFood();
 
         if (ConsumeFood(neededFood))
         {
@@ -231,13 +231,13 @@ public class PanelCharacterInterface : MonoBehaviour
         }
     }
 
-    private bool CheckFoodAvailability(float requiredAmount)
+    private bool CheckFoodAvailability(int requiredAmount)
     {
         FoodSystem foodSystem = FindFirstObjectByType<FoodSystem>();
         return foodSystem != null && foodSystem.GetCurrentFood() >= requiredAmount;
     }
 
-    private bool ConsumeFood(float amount)
+    private bool ConsumeFood(int amount)
     {
         FoodSystem foodSystem = FindFirstObjectByType<FoodSystem>();
         return foodSystem != null && foodSystem.ConsumeFood(amount);

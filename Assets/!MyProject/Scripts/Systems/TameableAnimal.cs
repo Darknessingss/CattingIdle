@@ -4,20 +4,20 @@ public class TameableAnimal : MonoBehaviour
 {
     private bool isTamed;
     private bool isBeingRemoved;
-    private float requiredFood;
+    private int requiredFood;
     private MonsterSpawner monsterIncome;
-    private float currentFoodSpent;
+    private int currentFoodSpent;
     private AnimalInventory animalInventory;
     private AnimalLimitManager limitManager;
 
-    public float RequiredFood => requiredFood;
+    public int RequiredFood => requiredFood;
     public bool IsTamed => isTamed;
-    public float RemainingFood => requiredFood - currentFoodSpent;
+    public int RemainingFood => requiredFood - currentFoodSpent;
 
     public void Initialize(RarityData rarityRef, AnimalInventory inventoryRef, AnimalLimitManager limit)
     {
         requiredFood = rarityRef.requiredFood;
-        currentFoodSpent = 0f;
+        currentFoodSpent = 0;
         animalInventory = inventoryRef;
         limitManager = limit;
     }
@@ -29,10 +29,10 @@ public class TameableAnimal : MonoBehaviour
             monsterIncome.enabled = false;
     }
 
-    public void AddFood(float amount)
+    public void AddFood(int amount)
     {
         if (isTamed) return;
-        float remainingNeeded = requiredFood - currentFoodSpent;
+        int remainingNeeded = requiredFood - currentFoodSpent;
         currentFoodSpent += Mathf.Min(amount, remainingNeeded);
     }
 
@@ -55,7 +55,7 @@ public class TameableAnimal : MonoBehaviour
         }
     }
 
-    public float GetRemainingFood() => requiredFood - currentFoodSpent;
+    public int GetRemainingFood() => requiredFood - currentFoodSpent;
     public void MarkAsBeingRemoved() => isBeingRemoved = true;
 
     void OnDestroy()

@@ -4,15 +4,23 @@ using UnityEngine.UI;
 
 public class BuyLimitButton : MonoBehaviour
 {
-    [SerializeField] private int limitIncrease = 1;
-    [SerializeField] private int price = 100;
+    [Header("Upgrade Settings")]
+    [SerializeField] private int limitIncrease = 2;
+    [SerializeField] private int maxUpgradeLevel = 5;
+    [SerializeField] private int basePrice = 500;
+    [SerializeField] private float priceMultiplier = 1.6f;
     [SerializeField] private int maxTotalLimit = 20;
+
+    [Header("UI References")]
     [SerializeField] private Button buyButton;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI limitText;
 
     private AnimalLimitManager limitManager;
     private Wallet wallet;
+    private int currentUpgradeLevel = 0;
+
+    public int CurrentPrice => Mathf.RoundToInt(basePrice * Mathf.Pow(priceMultiplier, currentUpgradeLevel));
 
     void Start()
     {
@@ -22,15 +30,18 @@ public class BuyLimitButton : MonoBehaviour
         if (buyButton != null)
             buyButton.onClick.AddListener(BuyLimit);
 
-        if (priceText != null)
-            priceText.text = $"Цена: {price}";
-
-        UpdateLimitText();
+        UpdateUI();
     }
 
     private void BuyLimit()
     {
         if (limitManager == null || wallet == null) return;
+
+        if (currentUpgradeLevel >= maxUpgradeLevel)
+        {
+            Debug.Log("Достигнут максимальный уровень улучшения лимита!");
+            return;
+        }
 
         if (limitManager.MaxTamedAnimals >= maxTotalLimit)
         {
@@ -38,21 +49,35 @@ public class BuyLimitButton : MonoBehaviour
             return;
         }
 
+        int price = CurrentPrice;
+
         if (wallet.SpendMoney(price))
         {
+            currentUpgradeLevel++;
             limitManager.IncreaseMaxLimit(limitIncrease);
-            UpdateLimitText();
-            Debug.Log($"Лимит увеличен на {limitIncrease}! Теперь максимум: {limitManager.MaxTamedAnimals}");
+            UpdateUI();
+            Debug.Log($"Лимит увеличен на {limitIncrease}! Теперь максимум: {limitManager.MaxTamedAnimals}. Следующая цена: {CurrentPrice}");
         }
         else
         {
-            Debug.Log("Недостаточно монет!");
+            Debug.Log($"Недостаточно монет! Нужно: {price}");
         }
     }
 
-    private void UpdateLimitText()
+    private void UpdateUI()
     {
+        if (priceText != null)
+        {
+            if (currentUpgradeLevel >= maxUpgradeLevel)
+                priceText.text = "MAX";
+            else
+                priceText.text = $"Цена: {CurrentPrice}";
+        }
+
         if (limitText != null && limitManager != null)
             limitText.text = $"+{limitIncrease}";
+
+        if (buyButton != null)
+            buyButton.interactable = currentUpgradeLevel < maxUpgradeLevel;
     }
 }

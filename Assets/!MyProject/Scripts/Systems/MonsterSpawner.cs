@@ -20,7 +20,7 @@ public class MonsterSpawner : MonoBehaviour
         if (renderer != null)
             renderer.material.color = rarity.rarityColor;
 
-        transform.localScale = Vector3.one * (0.8f + (rarity.multiplier / 10f));
+        transform.localScale = Vector3.one * (30f + (rarity.multiplier / 10f));
     }
 
     void Update()
