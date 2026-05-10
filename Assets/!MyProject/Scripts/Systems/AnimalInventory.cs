@@ -108,7 +108,7 @@ public class AnimalInventory : MonoBehaviour
     {
         selectedAnimalForDelete = animal;
         AnimalName animalName = animal.GetComponent<AnimalName>();
-        deleteMessageText.text = $"Удалить {animalName.animalName}?";
+        deleteMessageText.text = $"Delete {animalName.animalName}?";
         deletePanel.SetActive(true);
     }
 

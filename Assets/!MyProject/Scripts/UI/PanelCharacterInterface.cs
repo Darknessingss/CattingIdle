@@ -19,7 +19,7 @@ public class PanelCharacterInterface : MonoBehaviour
     [SerializeField] private float tamingDuration = 2f;
 
     [Header("Animal Names")]
-    [SerializeField] private string[] possibleNames = { "Лев", "Тигр", "Медведь", "Волк", "Лиса", "Заяц", "Слон", "Жираф", "Зебра", "Олень" };
+    [SerializeField] private string[] possibleNames = { "Lion", "Tiger", "Bear", "Wolf", "Fox", "Rabbit", "Elephant", "Giraffe", "Zebra", "Deer" };
 
     private GameObject currentHoveredAnimal;
     private float tamingTimer = 0f;
@@ -89,7 +89,7 @@ public class PanelCharacterInterface : MonoBehaviour
         {
             if (tamingProgressText != null)
             {
-                tamingProgressText.text = "ЛИМИТ ЖИВОТНЫХ ПРЕВЫШЕН!";
+                tamingProgressText.text = "ANIMAL LIMIT REACHED!";
                 tamingProgressText.color = Color.red;
             }
             return;
@@ -108,7 +108,7 @@ public class PanelCharacterInterface : MonoBehaviour
                 Debug.Log("Недостаточно еды!");
                 if (tamingProgressText != null)
                 {
-                    tamingProgressText.text = "Недостаточно еды!";
+                    tamingProgressText.text = "Not enough food!";
                     tamingProgressText.color = Color.red;
                 }
             }
@@ -121,7 +121,7 @@ public class PanelCharacterInterface : MonoBehaviour
 
             if (tamingProgressText != null)
             {
-                tamingProgressText.text = $"Приручение: {Mathf.RoundToInt(progress * 100)}%";
+                tamingProgressText.text = $"Tamed: {Mathf.RoundToInt(progress * 100)}%";
                 tamingProgressText.color = Color.yellow;
             }
 
@@ -208,24 +208,24 @@ public class PanelCharacterInterface : MonoBehaviour
             if (currentTameable.IsTamed)
                 requiredFoodText.text = "";
             else
-                requiredFoodText.text = $"Нужно еды: {currentTameable.GetRemainingFood()}";
+                requiredFoodText.text = $"Food needed: {currentTameable.GetRemainingFood()}";
         }
 
         if (tamingProgressText != null && currentTameable != null)
         {
             if (currentTameable.IsTamed)
             {
-                tamingProgressText.text = "Приручен";
+                tamingProgressText.text = "Tamed";
                 tamingProgressText.color = Color.green;
             }
             else if (limitManager != null && !limitManager.CanTame)
             {
-                tamingProgressText.text = "ЛИМИТ ЖИВОТНЫХ ПРЕВЫШЕН!";
+                tamingProgressText.text = "ANIMAL LIMIT REACHED!";
                 tamingProgressText.color = Color.red;
             }
             else if (!isTaming)
             {
-                tamingProgressText.text = "Нажми E для приручения";
+                tamingProgressText.text = "Press E to tame";
                 tamingProgressText.color = Color.white;
             }
         }

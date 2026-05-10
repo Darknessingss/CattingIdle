@@ -48,6 +48,5 @@ public class GeneratorLimitManager : MonoBehaviour
         if (generatorsCountText == null) return;
 
         generatorsCountText.text = $"{currentGeneratorCount}/{maxGenerators}";
-        generatorsCountText.color = currentGeneratorCount >= maxGenerators ? Color.red : Color.black;
     }
 }

@@ -6,7 +6,7 @@ public class SpawnSettings : MonoBehaviour
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private int maxSpawnedMonsters = 10;
     [SerializeField] private float spawnInterval = 5f;
-    [SerializeField] private string[] possibleNames = { "Лев", "Тигр", "Медведь", "Волк", "Лиса", "Заяц", "Слон", "Жираф", "Зебра", "Олень" };
+    [SerializeField] private string[] possibleNames = { "Lion", "Tiger", "Bear", "Wolf", "Fox", "Rabbit", "Elephant", "Giraffe", "Zebra", "Deer" };
     [SerializeField] private AnimalLimitManager _limitManager;
     [SerializeField] private AnimalInventory animalInventory;
 
