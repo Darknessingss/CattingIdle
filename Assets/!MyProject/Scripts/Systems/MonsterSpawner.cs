@@ -9,18 +9,26 @@ public class MonsterSpawner : MonoBehaviour
     private float income;
     private float incomeInterval;
     private float incomeTimer;
+    private float incomeMultiplier = 1f;
+    private bool isNightmare;
 
     public void Initialize(RarityData rarity)
     {
         income = baseIncome * rarity.multiplier;
         incomeInterval = Random.Range(minIncomeInterval, maxIncomeInterval);
         incomeTimer = incomeInterval;
+        isNightmare = rarity.rarityName == "Nightmare";
 
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
             renderer.material.color = rarity.rarityColor;
 
         transform.localScale = Vector3.one * (30f + (rarity.multiplier / 10f));
+    }
+
+    public void ApplyIncomeMultiplier(float multiplier)
+    {
+        incomeMultiplier *= multiplier;
     }
 
     void Update()
@@ -30,13 +38,14 @@ public class MonsterSpawner : MonoBehaviour
         {
             Wallet wallet = FindFirstObjectByType<Wallet>();
             if (wallet != null)
-                wallet.AddMoney(income);
+                wallet.AddMoney(income * incomeMultiplier);
             incomeTimer = incomeInterval;
         }
     }
 
-    public float GetIncome() => income;
+    public float GetIncome() => income * incomeMultiplier;
     public float GetIncomeInterval() => incomeInterval;
+    public bool IsNightmare() => isNightmare;
 
     void OnDestroy()
     {

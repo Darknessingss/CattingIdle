@@ -21,6 +21,9 @@ public class SpawnSettings : MonoBehaviour
         new RarityData { rarityName = "Nightmare", minMultiplier = 6f, maxMultiplier = 10f, spawnChance = 0.1f, rarityColor = Color.red, minRequiredFood = 600, maxRequiredFood = 1000 }
     };
 
+    private float[] originalChances;
+    private float bonusChance = 0f;
+
     private float spawnTimer;
     private int currentSpawnedMonsters;
 
@@ -29,7 +32,25 @@ public class SpawnSettings : MonoBehaviour
         if (spawnArea == null)
             spawnArea = GetComponent<BoxCollider>();
 
+        originalChances = new float[rarities.Length];
+        for (int i = 0; i < rarities.Length; i++)
+            originalChances[i] = rarities[i].spawnChance;
+
         spawnTimer = spawnInterval;
+    }
+
+    public void IncreaseRarityChance(float increasePercent)
+    {
+        bonusChance += increasePercent;
+
+        for (int i = 0; i < rarities.Length; i++)
+            rarities[i].spawnChance = originalChances[i];
+
+        rarities[3].spawnChance += bonusChance;
+        rarities[4].spawnChance += bonusChance;
+        rarities[5].spawnChance += bonusChance;
+
+        Debug.Log($"Шансы: Epic: {rarities[3].spawnChance}%, Legendary: {rarities[4].spawnChance}%, Nightmare: {rarities[5].spawnChance}%");
     }
 
     void Update()
