@@ -4,6 +4,7 @@ public class SpawnSettings : MonoBehaviour
 {
     [SerializeField] private BoxCollider spawnArea;
     [SerializeField] private GameObject monsterPrefab;
+    [SerializeField] private GameObject goldenFoxPrefab;
     [SerializeField] private int maxSpawnedMonsters = 10;
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private string[] possibleNames = { "Lion", "Tiger", "Bear", "Wolf", "Fox", "Rabbit", "Elephant", "Giraffe", "Zebra", "Deer" };
@@ -18,11 +19,13 @@ public class SpawnSettings : MonoBehaviour
         new RarityData { rarityName = "Rare", minMultiplier = 1.8f, maxMultiplier = 3f, spawnChance = 15f, rarityColor = Color.blue, minRequiredFood = 45, maxRequiredFood = 100 },
         new RarityData { rarityName = "Epic", minMultiplier = 2.5f, maxMultiplier = 4f, spawnChance = 8f, rarityColor = Color.magenta, minRequiredFood = 75, maxRequiredFood = 150 },
         new RarityData { rarityName = "Legendary", minMultiplier = 3.5f, maxMultiplier = 5f, spawnChance = 3f, rarityColor = new Color(1f, 0.5f, 0f), minRequiredFood = 125, maxRequiredFood = 250 },
-        new RarityData { rarityName = "Nightmare", minMultiplier = 6f, maxMultiplier = 10f, spawnChance = 0.1f, rarityColor = Color.red, minRequiredFood = 600, maxRequiredFood = 1000 }
+        new RarityData { rarityName = "Nightmare", minMultiplier = 6f, maxMultiplier = 10f, spawnChance = 0.1f, rarityColor = Color.red, minRequiredFood = 600, maxRequiredFood = 1000 },
+        new RarityData { rarityName = "Golden", minMultiplier = 10f, maxMultiplier = 10f, spawnChance = 0.01f, rarityColor = new Color(1f, 0.84f, 0f), minRequiredFood = 1500, maxRequiredFood = 2000 }
     };
 
     private float[] originalChances;
     private float bonusChance = 0f;
+    private float foodDiscount = 0f;
 
     private float spawnTimer;
     private int currentSpawnedMonsters;
@@ -50,7 +53,26 @@ public class SpawnSettings : MonoBehaviour
         rarities[4].spawnChance += bonusChance;
         rarities[5].spawnChance += bonusChance;
 
-        Debug.Log($"Шансы: Epic: {rarities[3].spawnChance}%, Legendary: {rarities[4].spawnChance}%, Nightmare: {rarities[5].spawnChance}%");
+        Debug.Log($"Шансы: Epic: {rarities[3].spawnChance}%, Legendary: {rarities[4].spawnChance}%, Nightmare: {rarities[5].spawnChance}%, Golden: {rarities[6].spawnChance}%");
+    }
+
+    public void IncreaseGoldenFoxChance(float increasePercent)
+    {
+        for (int i = 0; i < rarities.Length; i++)
+        {
+            if (rarities[i].rarityName == "Golden")
+            {
+                rarities[i].spawnChance += increasePercent;
+                Debug.Log($"Golden chance increased to: {rarities[i].spawnChance}%");
+                break;
+            }
+        }
+    }
+
+    public void ReduceFoodCost(float discountPercent)
+    {
+        foodDiscount = discountPercent;
+        Debug.Log($"Скидка на еду: {foodDiscount}%");
     }
 
     void Update()
@@ -70,9 +92,17 @@ public class SpawnSettings : MonoBehaviour
 
         RarityData selectedRarity = GetRandomRarity();
 
-        selectedRarity.requiredFood = Random.Range(selectedRarity.minRequiredFood, selectedRarity.maxRequiredFood + 1);
+        float multiplier = 1f - (foodDiscount / 100f);
+        int minFood = Mathf.RoundToInt(selectedRarity.minRequiredFood * multiplier);
+        int maxFood = Mathf.RoundToInt(selectedRarity.maxRequiredFood * multiplier);
 
-        GameObject newMonster = Instantiate(monsterPrefab, GetRandomPositionInBox(), monsterPrefab.transform.rotation);
+        minFood = Mathf.Max(1, minFood);
+        maxFood = Mathf.Max(1, maxFood);
+
+        selectedRarity.requiredFood = Random.Range(minFood, maxFood + 1);
+
+        GameObject prefabToUse = (selectedRarity.rarityName == "Golden" && goldenFoxPrefab != null) ? goldenFoxPrefab : monsterPrefab;
+        GameObject newMonster = Instantiate(prefabToUse, GetRandomPositionInBox(), prefabToUse.transform.rotation);
 
         MonsterSpawner monsterIncome = newMonster.GetComponent<MonsterSpawner>();
         if (monsterIncome == null)
@@ -89,6 +119,13 @@ public class SpawnSettings : MonoBehaviour
         if (tameable == null)
             tameable = newMonster.AddComponent<TameableAnimal>();
         tameable.Initialize(selectedRarity, animalInventory, _limitManager);
+
+        if (selectedRarity.rarityName == "Golden")
+        {
+            GoldenFox goldenFox = newMonster.GetComponent<GoldenFox>();
+            if (goldenFox == null)
+                newMonster.AddComponent<GoldenFox>();
+        }
 
         currentSpawnedMonsters++;
     }

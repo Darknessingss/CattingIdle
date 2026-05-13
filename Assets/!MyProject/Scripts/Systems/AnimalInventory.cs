@@ -50,10 +50,25 @@ public class AnimalInventory : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 TameableAnimal animal = hit.collider.GetComponent<TameableAnimal>();
-                if (animal != null)
+                if (animal != null && !IsNightmareOnScene(animal.gameObject))
                     ShowDeleteConfirmation(animal);
             }
         }
+    }
+
+    private bool IsNightmareOnScene(GameObject animal)
+    {
+        AnimalName animalName = animal.GetComponent<AnimalName>();
+        if (animalName != null && animalName.GetRarityName() == "Nightmare")
+        {
+            TameableAnimal tameable = animal.GetComponent<TameableAnimal>();
+            if (tameable != null && !tameable.IsTamed)
+            {
+                Debug.Log("Cannot delete Nightmare! Tame it first!");
+                return true;
+            }
+        }
+        return false;
     }
 
     public void RegisterAnimal(GameObject animal)
@@ -127,6 +142,12 @@ public class AnimalInventory : MonoBehaviour
 
     public void RemoveAnimal(TameableAnimal animal)
     {
+        if (IsNightmareOnScene(animal.gameObject))
+        {
+            Debug.Log("Cannot delete Nightmare fox!");
+            return;
+        }
+
         animal.MarkAsBeingRemoved();
         tamedAnimals.Remove(animal);
         allAnimalsOnScene.Remove(animal.gameObject);
