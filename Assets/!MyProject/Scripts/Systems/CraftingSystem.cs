@@ -12,8 +12,6 @@ public class CraftingSystem : MonoBehaviour
     [SerializeField] private ItemSO[] allItems;
 
     [Header("UI References")]
-    [SerializeField] private Transform craftButtonsContainer;
-    [SerializeField] private GameObject craftButtonPrefab;
     [SerializeField] private GameObject craftingPanel;
     [SerializeField] private Transform ingredientsContainer;
     [SerializeField] private Button craftButton;
@@ -37,7 +35,9 @@ public class CraftingSystem : MonoBehaviour
         if (craftingPanel != null)
             craftingPanel.SetActive(false);
 
-        CreateCraftButtons();
+        if (resultIconImage != null)
+            resultIconImage.gameObject.SetActive(false);
+
         UpdateAllCounters();
     }
 
@@ -52,25 +52,7 @@ public class CraftingSystem : MonoBehaviour
         }
     }
 
-    private void CreateCraftButtons()
-    {
-        foreach (Transform child in craftButtonsContainer)
-            Destroy(child.gameObject);
-
-        foreach (var recipe in recipes)
-        {
-            GameObject buttonObj = Instantiate(craftButtonPrefab, craftButtonsContainer);
-            Button button = buttonObj.GetComponent<Button>();
-            TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
-
-            if (buttonText != null)
-                buttonText.text = recipe.recipeName;
-
-            button.onClick.AddListener(() => SelectRecipe(recipe));
-        }
-    }
-
-    private void SelectRecipe(CraftRecipeSO recipe)
+    public void SelectRecipe(CraftRecipeSO recipe)
     {
         if (isCrafting) return;
 
@@ -79,7 +61,10 @@ public class CraftingSystem : MonoBehaviour
             craftingPanel.SetActive(true);
 
         if (resultIconImage != null && recipe.resultItem != null)
+        {
             resultIconImage.sprite = recipe.resultItem.icon;
+            resultIconImage.gameObject.SetActive(true);
+        }
 
         foreach (var slot in ingredientSlots)
             Destroy(slot);
@@ -87,23 +72,15 @@ public class CraftingSystem : MonoBehaviour
 
         for (int i = 0; i < recipe.ingredients.Count && i < ingredientSlotPrefabs.Length; i++)
         {
-            GameObject slot = Instantiate(ingredientSlotPrefabs[i], ingredientsContainer);
-
-            Image icon = slot.transform.Find("Icon")?.GetComponent<Image>();
-            TextMeshProUGUI countText = slot.transform.Find("Count")?.GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI nameText = slot.transform.Find("Name")?.GetComponent<TextMeshProUGUI>();
-
             var ingredient = recipe.ingredients[i];
+            int currentCount = GetItemCount(ingredient.item);
 
-            if (icon != null)
-                icon.sprite = ingredient.item.icon;
+            GameObject slot = Instantiate(ingredientSlotPrefabs[i], ingredientsContainer);
+            slot.transform.localScale = Vector3.one;
 
-            if (nameText != null)
-                nameText.text = ingredient.item.itemName;
-
+            TextMeshProUGUI countText = slot.GetComponentInChildren<TextMeshProUGUI>();
             if (countText != null)
             {
-                int currentCount = GetItemCount(ingredient.item);
                 countText.text = $"{currentCount}/{ingredient.amount}";
                 countText.color = currentCount >= ingredient.amount ? Color.green : Color.red;
             }
@@ -160,11 +137,11 @@ public class CraftingSystem : MonoBehaviour
         for (int i = 0; i < ingredientSlots.Count && i < selectedRecipe.ingredients.Count; i++)
         {
             var ingredient = selectedRecipe.ingredients[i];
-            TextMeshProUGUI countText = ingredientSlots[i].transform.Find("Count")?.GetComponent<TextMeshProUGUI>();
+            int currentCount = GetItemCount(ingredient.item);
 
+            TextMeshProUGUI countText = ingredientSlots[i].GetComponentInChildren<TextMeshProUGUI>();
             if (countText != null)
             {
-                int currentCount = GetItemCount(ingredient.item);
                 countText.text = $"{currentCount}/{ingredient.amount}";
                 countText.color = currentCount >= ingredient.amount ? Color.green : Color.red;
             }
@@ -218,7 +195,7 @@ public class CraftingSystem : MonoBehaviour
         {
             if (itemCountTexts[i] != null)
             {
-                itemCounts.TryGetValue(allItems[i], out int count);
+                int count = itemCounts.ContainsKey(allItems[i]) ? itemCounts[allItems[i]] : 0;
                 itemCountTexts[i].text = count.ToString();
             }
         }
@@ -241,6 +218,8 @@ public class CraftingSystem : MonoBehaviour
         if (craftingPanel != null)
             craftingPanel.SetActive(false);
         selectedRecipe = null;
+        if (resultIconImage != null)
+            resultIconImage.gameObject.SetActive(false);
         if (craftTimerText != null)
             craftTimerText.text = "CRAFT";
         isCrafting = false;

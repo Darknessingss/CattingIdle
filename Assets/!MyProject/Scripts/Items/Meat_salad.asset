@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c26e75077709071418e73f306834ed18, type: 3}
-  m_Name: SoupFood
+  m_Name: Meat_salad
   m_EditorClassIdentifier: 
-  id: 1
-  itemName: SoupFood
-  icon: {fileID: 0}
+  id: 5
+  itemName: Meat_salad
+  icon: {fileID: 1396688010, guid: bb3306e323ac5be46889efb74404aa63, type: 3}

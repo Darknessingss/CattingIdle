@@ -440,4 +440,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactKey: 101
-  raycastDistance: 150000
+  raycastDistance: 100
