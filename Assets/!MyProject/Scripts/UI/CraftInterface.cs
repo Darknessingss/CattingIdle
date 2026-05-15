@@ -5,18 +5,14 @@ using UnityEngine.UI;
 public class CraftInterface : MonoBehaviour
 {
     [SerializeField] private KeyCode interactKey = KeyCode.E;
-    [SerializeField] private float raycastDistance = 5f;
 
-    private Camera mainCamera;
-    private bool isPlayerLooking;
     private GameObject fabricCanvas;
     private GameObject craftInterface;
     private bool isOpen;
+    private Camera currentCamera;
 
     void Start()
     {
-        mainCamera = Camera.main;
-
         GameObject[] objects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
         foreach (GameObject obj in objects)
         {
@@ -41,17 +37,16 @@ public class CraftInterface : MonoBehaviour
 
     void Update()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        currentCamera = GetActiveCamera();
+        if (currentCamera == null) return;
+
+        Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, raycastDistance) && hit.collider.gameObject == gameObject)
+        if (Physics.Raycast(ray, out hit, 100f) && hit.collider.gameObject == gameObject)
         {
-            if (!isPlayerLooking)
-            {
-                isPlayerLooking = true;
-                if (fabricCanvas != null && !isOpen)
-                    fabricCanvas.SetActive(true);
-            }
+            if (fabricCanvas != null && !isOpen && !fabricCanvas.activeSelf)
+                fabricCanvas.SetActive(true);
 
             if (Input.GetKeyDown(interactKey) && !isOpen && craftInterface != null)
             {
@@ -60,18 +55,25 @@ public class CraftInterface : MonoBehaviour
         }
         else
         {
-            if (isPlayerLooking)
-            {
-                isPlayerLooking = false;
-                if (fabricCanvas != null && !isOpen)
-                    fabricCanvas.SetActive(false);
-            }
+            if (fabricCanvas != null && fabricCanvas.activeSelf && !isOpen)
+                fabricCanvas.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && isOpen)
         {
             CloseInterface();
         }
+    }
+
+    private Camera GetActiveCamera()
+    {
+        Camera[] allCameras = FindObjectsByType<Camera>(FindObjectsSortMode.None);
+        foreach (Camera cam in allCameras)
+        {
+            if (cam.gameObject.activeInHierarchy && cam.enabled)
+                return cam;
+        }
+        return Camera.main;
     }
 
     private void OpenInterface()
@@ -88,7 +90,7 @@ public class CraftInterface : MonoBehaviour
         isOpen = false;
         craftInterface.SetActive(false);
 
-        if (isPlayerLooking && fabricCanvas != null)
+        if (fabricCanvas != null)
             fabricCanvas.SetActive(true);
     }
 }

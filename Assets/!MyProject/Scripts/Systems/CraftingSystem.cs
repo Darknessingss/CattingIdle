@@ -70,12 +70,12 @@ public class CraftingSystem : MonoBehaviour
             Destroy(slot);
         ingredientSlots.Clear();
 
-        for (int i = 0; i < recipe.ingredients.Count && i < ingredientSlotPrefabs.Length; i++)
+        for (int i = 0; i < recipe.ingredients.Count; i++)
         {
             var ingredient = recipe.ingredients[i];
             int currentCount = GetItemCount(ingredient.item);
 
-            GameObject slot = Instantiate(ingredientSlotPrefabs[i], ingredientsContainer);
+            GameObject slot = Instantiate(ingredientSlotPrefabs[GetItemIndex(ingredient.item)], ingredientsContainer);
             slot.transform.localScale = Vector3.one;
 
             TextMeshProUGUI countText = slot.GetComponentInChildren<TextMeshProUGUI>();
@@ -93,10 +93,24 @@ public class CraftingSystem : MonoBehaviour
             craftButton.interactable = hasIngredients && !isCrafting;
 
         if (craftTimerText != null)
-            craftTimerText.text = "CRAFT";
+        {
+            int minutes = Mathf.FloorToInt(recipe.craftTimeSeconds / 60);
+            int seconds = Mathf.FloorToInt(recipe.craftTimeSeconds % 60);
+            craftTimerText.text = $"{minutes}:{seconds:00}";
+        }
     }
 
-    private int GetItemCount(ItemSO item)
+    private int GetItemIndex(ItemSO item)
+    {
+        for (int i = 0; i < allItems.Length; i++)
+        {
+            if (allItems[i] == item)
+                return i;
+        }
+        return 0;
+    }
+
+    public int GetItemCount(ItemSO item)
     {
         return itemCounts.ContainsKey(item) ? itemCounts[item] : 0;
     }

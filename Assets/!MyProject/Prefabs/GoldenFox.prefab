@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e18a7c94646f604c8ca7332e1482050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tameSound: {fileID: 8300000, guid: 05052d855c6b8bb4995a4ae2cff7d8b7, type: 3}
 --- !u!64 &7542991177519358749
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class TameableAnimal : MonoBehaviour
 {
+    [Header("Audio")]
+    [SerializeField] private AudioClip tameSound;
+
     private bool isTamed;
     private bool isBeingRemoved;
     private int requiredFood;
@@ -11,6 +14,7 @@ public class TameableAnimal : MonoBehaviour
     private AnimalLimitManager limitManager;
     private bool isNightmare;
     private NightmareTimer nightmareTimer;
+    private AudioSource audioSource;
 
     public int RequiredFood => requiredFood;
     public bool IsTamed => isTamed;
@@ -27,6 +31,10 @@ public class TameableAnimal : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
         monsterIncome = GetComponent<MonsterSpawner>();
         if (monsterIncome != null)
             monsterIncome.enabled = false;
@@ -58,6 +66,9 @@ public class TameableAnimal : MonoBehaviour
 
             isTamed = true;
             monsterIncome.enabled = true;
+
+            if (tameSound != null && audioSource != null)
+                audioSource.PlayOneShot(tameSound);
 
             if (isNightmare)
             {

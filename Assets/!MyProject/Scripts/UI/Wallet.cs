@@ -6,6 +6,8 @@ public class Wallet : MonoBehaviour
     [SerializeField] private TextMeshProUGUI walletText;
     [SerializeField] private float walletMoney = 100f;
 
+    public float WalletMoney => walletMoney;
+
     void Start()
     {
         UpdateUI();

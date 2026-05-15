@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e18a7c94646f604c8ca7332e1482050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tameSound: {fileID: 8300000, guid: 05052d855c6b8bb4995a4ae2cff7d8b7, type: 3}
 --- !u!64 &4363446153703444336
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -180,3 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToTame: 60
+  growlSound: {fileID: 8300000, guid: aa3befcc1156adf4090e01553a20928d, type: 3}
+  ambientHorrorSound: {fileID: 8300000, guid: 96666b5a8f168c5408800156720f6ac1, type: 3}
+  loopAmbientSound: 1

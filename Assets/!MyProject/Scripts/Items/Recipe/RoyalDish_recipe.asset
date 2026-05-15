@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c54282c769c49e418c4c2cefb2b3fb2, type: 3}
+  m_Name: RoyalDish_recipe
+  m_EditorClassIdentifier: 
+  recipeName: RoyalDish_recipe
+  craftTimeSeconds: 120
+  ingredients:
+  - item: {fileID: 11400000, guid: e4611461279985e47a7a70393411cbe2, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: 1c019958516fa4b49b1fb4a70ad457d5, type: 2}
+    amount: 3
+  - item: {fileID: 11400000, guid: c24749339b21de84c97be202579a8c97, type: 2}
+    amount: 1
+  resultItem: {fileID: 11400000, guid: 8d2def9d9811a604aa2b36ffd0525b69, type: 2}
+  resultAmount: 1
