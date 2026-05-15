@@ -18,14 +18,22 @@ public class CraftingSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI craftTimerText;
     [SerializeField] private Image resultIconImage;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip craftCompleteSound;
+
     private Dictionary<ItemSO, int> itemCounts = new Dictionary<ItemSO, int>();
     private CraftRecipeSO selectedRecipe;
     private bool isCrafting = false;
     private float currentCraftTime;
     private List<GameObject> ingredientSlots = new List<GameObject>();
+    private AudioSource audioSource;
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
         foreach (var item in allItems)
             itemCounts[item] = 0;
 
@@ -200,6 +208,10 @@ public class CraftingSystem : MonoBehaviour
             craftTimerText.text = "CRAFT";
 
         RefreshIngredientsUI();
+
+        if (craftCompleteSound != null && audioSource != null)
+            audioSource.PlayOneShot(craftCompleteSound);
+
         Debug.Log($"Crafted {selectedRecipe.recipeName}!");
     }
 
