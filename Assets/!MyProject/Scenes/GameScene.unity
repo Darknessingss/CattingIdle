@@ -23556,7 +23556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredItem: {fileID: 11400000, guid: 5603cbbe812678d49ab13f86582ad139, type: 2}
-  requiredMoney: 2000000
+  requiredMoney: 1000000
   winPanel: {fileID: 1953460745}
   winButton: {fileID: 714705534}
   costText: {fileID: 965538484}
