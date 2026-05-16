@@ -6,24 +6,35 @@ public class ButtonSounds : MonoBehaviour
     [SerializeField] private AudioClip clickSound;
     [SerializeField] private float volume = 1f;
 
-    private AudioSource audioSource;
-    private Button button;
+    private static AudioSource globalAudioSource;
 
     void Start()
     {
-        button = GetComponent<Button>();
-        if (button == null) return;
+        if (globalAudioSource == null)
+        {
+            GameObject audioObj = GameObject.Find("GlobalButtonAudio");
+            if (audioObj == null)
+            {
+                audioObj = new GameObject("GlobalButtonAudio");
+                DontDestroyOnLoad(audioObj);
+            }
+            globalAudioSource = audioObj.GetComponent<AudioSource>();
+            if (globalAudioSource == null)
+                globalAudioSource = audioObj.AddComponent<AudioSource>();
+            globalAudioSource.playOnAwake = false;
+            globalAudioSource.volume = volume;
+        }
 
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
-        audioSource.volume = volume;
-
-        button.onClick.AddListener(PlaySound);
+        Button button = GetComponent<Button>();
+        if (button != null)
+            button.onClick.AddListener(PlaySound);
     }
 
     private void PlaySound()
     {
-        if (clickSound != null && audioSource != null)
-            audioSource.PlayOneShot(clickSound);
+        if (clickSound != null && globalAudioSource != null)
+        {
+            globalAudioSource.PlayOneShot(clickSound);
+        }
     }
 }

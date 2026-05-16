@@ -149,9 +149,14 @@ public class AnimalInventory : MonoBehaviour
         }
 
         animal.MarkAsBeingRemoved();
+
+        if (animal.IsTamed)
+        {
+            limitManager.RemoveTamedAnimal();
+        }
+
         tamedAnimals.Remove(animal);
         allAnimalsOnScene.Remove(animal.gameObject);
-        limitManager.RemoveTamedAnimal();
         Destroy(animal.gameObject);
         RearrangeAnimals();
     }

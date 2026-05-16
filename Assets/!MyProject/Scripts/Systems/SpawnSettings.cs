@@ -7,6 +7,7 @@ public class SpawnSettings : MonoBehaviour
     [SerializeField] private GameObject goldenFoxPrefab;
     [SerializeField] private int maxSpawnedMonsters = 10;
     [SerializeField] private float spawnInterval = 5f;
+    [SerializeField] private float minSpawnDistance = 1.5f;
     [SerializeField] private string[] possibleNames = { "Lion", "Tiger", "Bear", "Wolf", "Fox", "Rabbit", "Elephant", "Giraffe", "Zebra", "Deer" };
     [SerializeField] private AnimalLimitManager _limitManager;
     [SerializeField] private AnimalInventory animalInventory;
@@ -101,6 +102,42 @@ public class SpawnSettings : MonoBehaviour
         return false;
     }
 
+    private bool IsPositionTooClose(Vector3 position, float minDistance)
+    {
+        TameableAnimal[] allAnimals = FindObjectsByType<TameableAnimal>(FindObjectsSortMode.None);
+        foreach (var animal in allAnimals)
+        {
+            if (Vector3.Distance(animal.transform.position, position) < minDistance)
+            {
+                return true;
+            }
+        }
+
+        GoldenFox[] goldenFoxes = FindObjectsByType<GoldenFox>(FindObjectsSortMode.None);
+        foreach (var golden in goldenFoxes)
+        {
+            if (Vector3.Distance(golden.transform.position, position) < minDistance)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Vector3 GetValidSpawnPosition()
+    {
+        for (int attempt = 0; attempt < 30; attempt++)
+        {
+            Vector3 position = GetRandomPositionInBox();
+            if (!IsPositionTooClose(position, minSpawnDistance))
+            {
+                return position;
+            }
+        }
+        return GetRandomPositionInBox();
+    }
+
     private void SpawnMonster()
     {
         if (monsterPrefab == null || spawnArea == null) return;
@@ -122,7 +159,8 @@ public class SpawnSettings : MonoBehaviour
         selectedRarity.requiredFood = Random.Range(minFood, maxFood + 1);
 
         GameObject prefabToUse = (selectedRarity.rarityName == "Golden" && goldenFoxPrefab != null) ? goldenFoxPrefab : monsterPrefab;
-        GameObject newMonster = Instantiate(prefabToUse, GetRandomPositionInBox(), prefabToUse.transform.rotation);
+        Vector3 spawnPosition = GetValidSpawnPosition();
+        GameObject newMonster = Instantiate(prefabToUse, spawnPosition, prefabToUse.transform.rotation);
 
         MonsterSpawner monsterIncome = newMonster.GetComponent<MonsterSpawner>();
         if (monsterIncome == null)
