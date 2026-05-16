@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseIncome: 10
   minIncomeInterval: 1
-  maxIncomeInterval: 35
+  maxIncomeInterval: 50
 --- !u!114 &6811134500791824047
 MonoBehaviour:
   m_ObjectHideFlags: 0

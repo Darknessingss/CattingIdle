@@ -52,6 +52,7 @@ public class SpawnSettings : MonoBehaviour
         rarities[3].spawnChance += bonusChance;
         rarities[4].spawnChance += bonusChance;
         rarities[5].spawnChance += bonusChance;
+        rarities[6].spawnChance += bonusChance;
 
         Debug.Log($"Шансы: Epic: {rarities[3].spawnChance}%, Legendary: {rarities[4].spawnChance}%, Nightmare: {rarities[5].spawnChance}%, Golden: {rarities[6].spawnChance}%");
     }
@@ -86,11 +87,30 @@ public class SpawnSettings : MonoBehaviour
         }
     }
 
+    private bool HasUnTamedNightmare()
+    {
+        TameableAnimal[] allAnimals = FindObjectsByType<TameableAnimal>(FindObjectsSortMode.None);
+        foreach (var animal in allAnimals)
+        {
+            AnimalName animalName = animal.GetComponent<AnimalName>();
+            if (animalName != null && animalName.GetRarityName() == "Nightmare" && !animal.IsTamed)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void SpawnMonster()
     {
         if (monsterPrefab == null || spawnArea == null) return;
 
         RarityData selectedRarity = GetRandomRarity();
+
+        if (selectedRarity.rarityName == "Nightmare" && HasUnTamedNightmare())
+        {
+            return;
+        }
 
         float multiplier = 1f - (foodDiscount / 100f);
         int minFood = Mathf.RoundToInt(selectedRarity.minRequiredFood * multiplier);

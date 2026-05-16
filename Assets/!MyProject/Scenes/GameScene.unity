@@ -4914,7 +4914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walletText: {fileID: 703015008}
-  walletMoney: 999999
+  walletMoney: 50
 --- !u!114 &375233075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4948,59 +4948,59 @@ MonoBehaviour:
   rarities:
   - rarityName: Common
     minMultiplier: 1
-    maxMultiplier: 1.2
+    maxMultiplier: 3
     spawnChance: 95
     rarityColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
     minRequiredFood: 8
     maxRequiredFood: 20
     requiredFood: 0
   - rarityName: Uncommon
-    minMultiplier: 1.2
-    maxMultiplier: 2
-    spawnChance: 12
-    rarityColor: {r: 0, g: 1, b: 0, a: 1}
-    minRequiredFood: 25
-    maxRequiredFood: 40
-    requiredFood: 0
-  - rarityName: Rare
-    minMultiplier: 1.5
-    maxMultiplier: 3
-    spawnChance: 7
-    rarityColor: {r: 0.34242615, g: 0.34242615, b: 0.8962264, a: 1}
-    minRequiredFood: 45
-    maxRequiredFood: 100
-    requiredFood: 0
-  - rarityName: Epic
-    minMultiplier: 2
-    maxMultiplier: 4
-    spawnChance: 4
-    rarityColor: {r: 1, g: 0, b: 1, a: 1}
-    minRequiredFood: 75
-    maxRequiredFood: 150
-    requiredFood: 0
-  - rarityName: Legendary
     minMultiplier: 3
     maxMultiplier: 5
+    spawnChance: 12
+    rarityColor: {r: 0, g: 1, b: 0, a: 1}
+    minRequiredFood: 40
+    maxRequiredFood: 80
+    requiredFood: 0
+  - rarityName: Rare
+    minMultiplier: 5
+    maxMultiplier: 8
+    spawnChance: 7
+    rarityColor: {r: 0.34242615, g: 0.34242615, b: 0.8962264, a: 1}
+    minRequiredFood: 150
+    maxRequiredFood: 200
+    requiredFood: 0
+  - rarityName: Epic
+    minMultiplier: 5
+    maxMultiplier: 10
+    spawnChance: 4
+    rarityColor: {r: 1, g: 0, b: 1, a: 1}
+    minRequiredFood: 350
+    maxRequiredFood: 500
+    requiredFood: 0
+  - rarityName: Legendary
+    minMultiplier: 10
+    maxMultiplier: 15
     spawnChance: 2
     rarityColor: {r: 1, g: 0.5, b: 0, a: 1}
-    minRequiredFood: 125
-    maxRequiredFood: 250
+    minRequiredFood: 600
+    maxRequiredFood: 800
     requiredFood: 0
   - rarityName: Nightmare
-    minMultiplier: 6
-    maxMultiplier: 10
+    minMultiplier: 15
+    maxMultiplier: 30
     spawnChance: 0.1
     rarityColor: {r: 1, g: 0, b: 0, a: 1}
-    minRequiredFood: 600
-    maxRequiredFood: 5000
+    minRequiredFood: 1500
+    maxRequiredFood: 2000
     requiredFood: 0
   - rarityName: Golden
-    minMultiplier: 8
-    maxMultiplier: 12
+    minMultiplier: 10
+    maxMultiplier: 15
     spawnChance: 0.01
     rarityColor: {r: 1, g: 0.85331404, b: 0, a: 1}
-    minRequiredFood: 1500
-    maxRequiredFood: 9000
+    minRequiredFood: 3000
+    maxRequiredFood: 5000
     requiredFood: 0
 --- !u!114 &375233076
 MonoBehaviour:
@@ -5014,7 +5014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa02fd1b4835174f8c7639f02b2cef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingFood: 9999
+  startingFood: 10
   foodText: {fileID: 551604202}
 --- !u!114 &375233077
 MonoBehaviour:
@@ -5028,7 +5028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20949ab0abcad240b2524a962941bb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTamedAnimals: 5
+  maxTamedAnimals: 3
   tamedCountText: {fileID: 1960396087}
 --- !u!114 &375233078
 MonoBehaviour:
@@ -8371,7 +8371,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'COST: 100
+  m_text: 'COST: 10000
 
 '
   m_isRightToLeft: 0
@@ -8439,7 +8439,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -19.599854, y: 0, z: -9.800049, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -23705,9 +23705,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitIncrease: 1
-  maxUpgradeLevel: 5
-  basePrice: 150
-  priceMultiplier: 1.6
+  maxUpgradeLevel: 17
+  basePrice: 200
+  priceMultiplier: 1.4
   buyButton: {fileID: 2064720922}
   priceText: {fileID: 668220190}
   limitText: {fileID: 792184705}
@@ -23723,11 +23723,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cca305270323511439e73999fa717260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpgradeLevel: 5
+  maxUpgradeLevel: 10
   upgradeBasePrice: 100
-  upgradePriceMultiplier: 1.8
+  upgradePriceMultiplier: 2
   baseFoodPerTick: 5
-  foodIncreasePerUpgrade: 2
+  foodIncreasePerUpgrade: 5
   upgradeButton: {fileID: 1462501617}
   upgradePriceText: {fileID: 1633223864}
   upgradeLevelText: {fileID: 1360945624}
@@ -23744,7 +23744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37756eab033b3d2439da0db24f967fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrice: 1000
+  itemPrice: 3500
   prefabToSpawn: {fileID: 8510547599797641022, guid: 270d77ae62c1c094f97f472689592008, type: 3}
   spawnPoint: {fileID: 751506586}
   maxPurchaseCount: 1
@@ -23765,8 +23765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 048b3d52a70e42541ab4006c03386f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpgradeLevel: 10
-  basePrice: 500
+  maxUpgradeLevel: 5
+  basePrice: 300
   priceMultiplier: 1.5
   chanceIncreasePercent: 0.1
   upgradeButton: {fileID: 522580554}
@@ -23785,10 +23785,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d2fc85c7b53f2242917e1f15856c17c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpgradeLevel: 10
+  maxUpgradeLevel: 5
   basePrice: 200
   priceMultiplier: 1.6
-  costReductionPercent: 1
+  costReductionPercent: 3
   upgradeButton: {fileID: 114461401}
   priceText: {fileID: 88067782}
   levelText: {fileID: 466505969}
@@ -23805,9 +23805,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b912cec408ae5349b574bdbf21a026b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpgradeLevel: 10
-  basePrice: 1000
-  priceMultiplier: 1.8
+  maxUpgradeLevel: 6
+  basePrice: 500
+  priceMultiplier: 2.5
   chanceIncreasePercent: 0.05
   upgradeButton: {fileID: 2018151554}
   priceText: {fileID: 985383527}
@@ -23826,7 +23826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredItem: {fileID: 11400000, guid: 5603cbbe812678d49ab13f86582ad139, type: 2}
-  requiredMoney: 1000000
+  requiredMoney: 2000000
   winPanel: {fileID: 1953460745}
   winButton: {fileID: 714705534}
   costText: {fileID: 965538484}
