@@ -28,6 +28,13 @@ public class WinButton : MonoBehaviour
             winPanel.SetActive(false);
 
         UpdateCostText();
+
+        RarityLocalizer.OnLanguageChanged += UpdateCostText;
+    }
+
+    void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdateCostText;
     }
 
     private void CheckWinCondition()
@@ -49,7 +56,7 @@ public class WinButton : MonoBehaviour
         }
         else
         {
-            Debug.Log($"COST: {requiredMoney} coins");
+            Debug.Log($"{RarityLocalizer.GetLocalizedCost()} {requiredMoney} coins");
         }
     }
 
@@ -57,7 +64,7 @@ public class WinButton : MonoBehaviour
     {
         if (costText != null)
         {
-            costText.text = $"COST: {requiredMoney}";
+            costText.text = $"{RarityLocalizer.GetLocalizedCost()} {requiredMoney}";
         }
     }
 }

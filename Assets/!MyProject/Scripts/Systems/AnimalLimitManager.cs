@@ -57,4 +57,5 @@ public class AnimalLimitManager : MonoBehaviour
         tamedCountText.text = $"{currentTamedCount}/{maxTamedAnimals}";
         tamedCountText.color = currentTamedCount >= maxTamedAnimals ? Color.red : Color.white;
     }
+
 }

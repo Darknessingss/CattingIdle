@@ -53,7 +53,6 @@ public class PanelCharacterInterface : MonoBehaviour
                     UpdateAnimalUI();
                     statsPanel.SetActive(true);
                 }
-
                 HandleTaming();
             }
             else if (currentHoveredAnimal != null)
@@ -89,7 +88,7 @@ public class PanelCharacterInterface : MonoBehaviour
         {
             if (tamingProgressText != null)
             {
-                tamingProgressText.text = "ANIMAL LIMIT REACHED!";
+                tamingProgressText.text = RarityLocalizer.GetLocalizedTamingStatus(false, false, false, 0);
                 tamingProgressText.color = Color.red;
             }
             return;
@@ -105,10 +104,9 @@ public class PanelCharacterInterface : MonoBehaviour
             }
             else
             {
-                Debug.Log("Недостаточно еды!");
                 if (tamingProgressText != null)
                 {
-                    tamingProgressText.text = "Not enough food!";
+                    tamingProgressText.text = RarityLocalizer.GetLocalizedTamingStatus(false, true, false, 0);
                     tamingProgressText.color = Color.red;
                 }
             }
@@ -118,10 +116,11 @@ public class PanelCharacterInterface : MonoBehaviour
         {
             tamingTimer += Time.deltaTime;
             float progress = tamingTimer / tamingDuration;
+            int percent = Mathf.RoundToInt(progress * 100);
 
             if (tamingProgressText != null)
             {
-                tamingProgressText.text = $"Tamed: {Mathf.RoundToInt(progress * 100)}%";
+                tamingProgressText.text = RarityLocalizer.GetLocalizedTamingStatus(false, true, true, percent);
                 tamingProgressText.color = Color.yellow;
             }
 
@@ -142,11 +141,9 @@ public class PanelCharacterInterface : MonoBehaviour
             isTaming = false;
             tamingTimer = 0f;
             UpdateAnimalUI();
-            Debug.Log("Животное успешно приручено!");
         }
         else
         {
-            Debug.Log("Ошибка: не хватает еды!");
             CancelTaming();
         }
     }
@@ -181,7 +178,7 @@ public class PanelCharacterInterface : MonoBehaviour
 
         if (nameText != null)
         {
-            nameText.text = animalNameComponent.animalName;
+            nameText.text = animalNameComponent.GetLocalizedName();
             nameText.color = Color.white;
         }
 
@@ -195,11 +192,11 @@ public class PanelCharacterInterface : MonoBehaviour
         {
             float interval = monsterIncome.GetIncomeInterval();
             if (interval >= 60f)
-                incomeIntervalText.text = $"{Mathf.RoundToInt(interval / 60f)}/min";
+                incomeIntervalText.text = $"{Mathf.RoundToInt(interval / 60f)} {RarityLocalizer.GetLocalizedPerMin()}";
             else if (interval >= 1f)
-                incomeIntervalText.text = $"{Mathf.RoundToInt(interval)}/sec";
+                incomeIntervalText.text = $"{Mathf.RoundToInt(interval)} {RarityLocalizer.GetLocalizedPerSec()}";
             else
-                incomeIntervalText.text = $"{Mathf.RoundToInt(1f / interval)}/sec";
+                incomeIntervalText.text = $"{Mathf.RoundToInt(1f / interval)} {RarityLocalizer.GetLocalizedPerSec()}";
             incomeIntervalText.color = Color.white;
         }
 
@@ -208,24 +205,24 @@ public class PanelCharacterInterface : MonoBehaviour
             if (currentTameable.IsTamed)
                 requiredFoodText.text = "";
             else
-                requiredFoodText.text = $"Food needed: {currentTameable.GetRemainingFood()}";
+                requiredFoodText.text = $"{RarityLocalizer.GetLocalizedFoodNeeded()} {currentTameable.GetRemainingFood()}";
         }
 
         if (tamingProgressText != null && currentTameable != null)
         {
             if (currentTameable.IsTamed)
             {
-                tamingProgressText.text = "Tamed";
+                tamingProgressText.text = RarityLocalizer.GetLocalizedTamingStatus(true, false, false, 0);
                 tamingProgressText.color = Color.green;
             }
             else if (limitManager != null && !limitManager.CanTame)
             {
-                tamingProgressText.text = "ANIMAL LIMIT REACHED!";
+                tamingProgressText.text = RarityLocalizer.GetLocalizedTamingStatus(false, false, false, 0);
                 tamingProgressText.color = Color.red;
             }
             else if (!isTaming)
             {
-                tamingProgressText.text = "Press E to tame";
+                tamingProgressText.text = RarityLocalizer.GetLocalizedTamingStatus(false, true, false, 0);
                 tamingProgressText.color = Color.white;
             }
         }

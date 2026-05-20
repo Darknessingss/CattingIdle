@@ -29,6 +29,7 @@ public class FoodPurchase : MonoBehaviour
 
         buyButton.onClick.AddListener(BuyGenerator);
         UpdateUI();
+        RarityLocalizer.OnLanguageChanged += UpdateUI;
     }
 
     private void BuyGenerator()
@@ -63,9 +64,13 @@ public class FoodPurchase : MonoBehaviour
         bool isMax = !limitManager.CanBuy || spawnedGenerators.Count >= waypoints.Count;
 
         if (priceText != null)
-            priceText.text = isMax ? "MAX" : $"COST: {CurrentGeneratorPrice}";
+            priceText.text = isMax ? "MAX" : $"{RarityLocalizer.GetLocalizedCost()} {CurrentGeneratorPrice}";
 
         if (buyButton != null)
             buyButton.interactable = !isMax;
+    }
+    void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdateUI;
     }
 }

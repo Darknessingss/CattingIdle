@@ -32,6 +32,7 @@ public class GoldenFoxUpgrade : MonoBehaviour
             upgradeButton.onClick.AddListener(TryUpgrade);
 
         UpdateUI();
+        RarityLocalizer.OnLanguageChanged += UpdateUI;
     }
 
     private void TryUpgrade()
@@ -61,7 +62,7 @@ public class GoldenFoxUpgrade : MonoBehaviour
         bool isMax = currentUpgradeLevel >= maxUpgradeLevel;
 
         if (priceText != null)
-            priceText.text = isMax ? "MAX" : $"COST: {CurrentPrice}";
+            priceText.text = isMax ? "MAX" : $"{RarityLocalizer.GetLocalizedCost()} {CurrentPrice}";
 
         if (levelText != null)
             levelText.text = $"{currentUpgradeLevel}/{maxUpgradeLevel}";
@@ -71,5 +72,10 @@ public class GoldenFoxUpgrade : MonoBehaviour
 
         if (upgradeButton != null)
             upgradeButton.interactable = !isMax;
+    }
+
+    void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdateUI;
     }
 }

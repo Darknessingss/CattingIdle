@@ -20,6 +20,7 @@ public class FoodSystem : MonoBehaviour
     {
         currentFood += amount;
         UpdateFoodUI();
+
     }
 
     public bool ConsumeFood(float amount)

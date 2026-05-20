@@ -47,6 +47,7 @@ public class CraftingSystem : MonoBehaviour
             resultIconImage.gameObject.SetActive(false);
 
         UpdateAllCounters();
+        RarityLocalizer.OnLanguageChanged += UpdateCraftText;
     }
 
     private void Update()
@@ -102,9 +103,12 @@ public class CraftingSystem : MonoBehaviour
 
         if (craftTimerText != null)
         {
-            int minutes = Mathf.FloorToInt(recipe.craftTimeSeconds / 60);
-            int seconds = Mathf.FloorToInt(recipe.craftTimeSeconds % 60);
-            craftTimerText.text = $"{minutes}:{seconds:00}";
+            if (!isCrafting)
+            {
+                int minutes = Mathf.FloorToInt(recipe.craftTimeSeconds / 60);
+                int seconds = Mathf.FloorToInt(recipe.craftTimeSeconds % 60);
+                craftTimerText.text = $"{RarityLocalizer.GetLocalizedCraft()} {minutes}:{seconds:00}";
+            }
         }
     }
 
@@ -180,10 +184,6 @@ public class CraftingSystem : MonoBehaviour
                 int seconds = Mathf.FloorToInt(currentCraftTime % 60);
                 craftTimerText.text = $"{minutes}:{seconds:00}";
             }
-            else
-            {
-                craftTimerText.text = "CRAFT";
-            }
         }
     }
 
@@ -205,7 +205,11 @@ public class CraftingSystem : MonoBehaviour
             craftButton.interactable = true;
 
         if (craftTimerText != null)
-            craftTimerText.text = "CRAFT";
+        {
+            int minutes = Mathf.FloorToInt(selectedRecipe.craftTimeSeconds / 60);
+            int seconds = Mathf.FloorToInt(selectedRecipe.craftTimeSeconds % 60);
+            craftTimerText.text = $"{RarityLocalizer.GetLocalizedCraft()} {minutes}:{seconds:00}";
+        }
 
         RefreshIngredientsUI();
 
@@ -247,7 +251,44 @@ public class CraftingSystem : MonoBehaviour
         if (resultIconImage != null)
             resultIconImage.gameObject.SetActive(false);
         if (craftTimerText != null)
-            craftTimerText.text = "CRAFT";
+        {
+            if (selectedRecipe != null)
+            {
+                int minutes = Mathf.FloorToInt(selectedRecipe.craftTimeSeconds / 60);
+                int seconds = Mathf.FloorToInt(selectedRecipe.craftTimeSeconds % 60);
+                craftTimerText.text = $"{RarityLocalizer.GetLocalizedCraft()} {minutes}:{seconds:00}";
+            }
+            else
+            {
+                craftTimerText.text = RarityLocalizer.GetLocalizedCraft();
+            }
+        }
         isCrafting = false;
     }
+
+    private void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdateCraftText;
+    }
+
+    private void UpdateCraftText()
+    {
+        if (craftTimerText != null && selectedRecipe != null && !isCrafting)
+        {
+            int minutes = Mathf.FloorToInt(selectedRecipe.craftTimeSeconds / 60);
+            int seconds = Mathf.FloorToInt(selectedRecipe.craftTimeSeconds % 60);
+            craftTimerText.text = $"{RarityLocalizer.GetLocalizedCraft()} {minutes}:{seconds:00}";
+        }
+        else if (craftTimerText != null && !isCrafting && selectedRecipe == null)
+        {
+            craftTimerText.text = RarityLocalizer.GetLocalizedCraft();
+        }
+    }
+    public int GetItemCountByIndex(int index)
+    {
+        if (index < allItems.Length)
+            return GetItemCount(allItems[index]);
+        return 0;
+    }
+
 }

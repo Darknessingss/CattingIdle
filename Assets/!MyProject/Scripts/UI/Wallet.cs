@@ -4,7 +4,7 @@ using UnityEngine;
 public class Wallet : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI walletText;
-    [SerializeField] private float walletMoney = 100f;
+    [SerializeField] private float walletMoney = 50f;
 
     public float WalletMoney => walletMoney;
 

@@ -24,6 +24,8 @@ public class BuyLimitButton : MonoBehaviour
         wallet = FindFirstObjectByType<Wallet>();
         buyButton.onClick.AddListener(BuyLimit);
         UpdateUI();
+
+        RarityLocalizer.OnLanguageChanged += UpdateUI;
     }
 
     private void BuyLimit()
@@ -44,12 +46,17 @@ public class BuyLimitButton : MonoBehaviour
         bool isMax = currentUpgradeLevel >= maxUpgradeLevel;
 
         if (priceText != null)
-            priceText.text = isMax ? "MAX" : $"COST: {CurrentPrice}";
+            priceText.text = isMax ? "MAX" : $"{RarityLocalizer.GetLocalizedCost()} {CurrentPrice}";
 
         if (limitText != null)
             limitText.text = $"+{limitIncrease}";
 
         if (buyButton != null)
             buyButton.interactable = !isMax;
+    }
+
+    void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdateUI;
     }
 }

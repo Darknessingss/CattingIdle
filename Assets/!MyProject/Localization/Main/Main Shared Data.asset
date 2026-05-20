@@ -23,6 +23,126 @@ MonoBehaviour:
     m_Key: Tamed_Time
     m_Metadata:
       m_Items: []
+  - m_Id: 353508523364352
+    m_Key: Start_game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 354188713644032
+    m_Key: Coming_Soon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356325526982656
+    m_Key: cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356343709290496
+    m_Key: apply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356356199927808
+    m_Key: want_delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357715011817472
+    m_Key: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364760964386816
+    m_Key: stewedmeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364814412402688
+    m_Key: meatsalad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364860402946048
+    m_Key: fruitesalad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364929525075968
+    m_Key: craft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365770915041280
+    m_Key: royaldish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365819409584128
+    m_Key: exoticmix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365870995329024
+    m_Key: divine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365903140474880
+    m_Key: serenasalad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367813922770944
+    m_Key: animal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367825226420224
+    m_Key: fabric
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367837360541696
+    m_Key: ingridients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368284347518976
+    m_Key: buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 369672917995520
+    m_Key: shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373051442450432
+    m_Key: wingame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373484147822592
+    m_Key: veganingr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373547779608576
+    m_Key: fruiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373608034979840
+    m_Key: meating
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374105705926656
+    m_Key: upgradefoodgen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374130221633536
+    m_Key: foodgen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374151864242176
+    m_Key: fabricgenerator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374951281807360
+    m_Key: limitanimalupgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374953135689728
+    m_Key: chanceanimalupgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374954821799936
+    m_Key: upgradecoostfoodanimal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374955962650624
+    m_Key: goldenchanceupgrade
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

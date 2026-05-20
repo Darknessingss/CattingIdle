@@ -20,8 +20,20 @@ public class BuyIngredientButton : MonoBehaviour
         if (button != null)
             button.onClick.AddListener(BuyItem);
 
+        UpdatePriceText();
+
+        RarityLocalizer.OnLanguageChanged += UpdatePriceText;
+    }
+
+    void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdatePriceText;
+    }
+
+    private void UpdatePriceText()
+    {
         if (priceText != null)
-            priceText.text = $"COST: {price}";
+            priceText.text = $"{RarityLocalizer.GetLocalizedCost()} {price}";
     }
 
     private void BuyItem()

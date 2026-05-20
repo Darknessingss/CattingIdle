@@ -23,7 +23,15 @@ public class AnimalName : MonoBehaviour
             renderer.material.color = rarityColor;
     }
 
-    public string GetRarityName() => rarityName;
     public Color GetRarityColor() => rarityColor;
     public float GetMultiplier() => multiplier;
+
+    public string GetRarityName()
+    {
+        return RarityLocalizer.GetLocalizedRarity(rarityName);
+    }
+    public string GetLocalizedName()
+    {
+        return RarityLocalizer.GetLocalizedAnimalName(animalName);
+    }
 }

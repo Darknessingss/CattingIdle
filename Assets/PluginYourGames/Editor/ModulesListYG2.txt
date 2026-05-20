@@ -1,2 +1,3 @@
+Authorization v1.023
 Localization v1.02
 Storage v1.021

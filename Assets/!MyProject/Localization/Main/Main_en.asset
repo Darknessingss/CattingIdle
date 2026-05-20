@@ -26,6 +26,126 @@ MonoBehaviour:
     m_Localized: Tamed Time
     m_Metadata:
       m_Items: []
+  - m_Id: 353508523364352
+    m_Localized: START GAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 354188713644032
+    m_Localized: Coming Soon....
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356325526982656
+    m_Localized: CANCEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356343709290496
+    m_Localized: APPLY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356356199927808
+    m_Localized: DO YOU WANT TO DELETE IT?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357715011817472
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364760964386816
+    m_Localized: stewed meat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364814412402688
+    m_Localized: meat salad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364860402946048
+    m_Localized: fruite salad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364929525075968
+    m_Localized: craft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365770915041280
+    m_Localized: royal dish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365819409584128
+    m_Localized: exotic mix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365870995329024
+    m_Localized: divine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365903140474880
+    m_Localized: serena salad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367813922770944
+    m_Localized: animal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367825226420224
+    m_Localized: fabric
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367837360541696
+    m_Localized: ingridients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368284347518976
+    m_Localized: buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 369672917995520
+    m_Localized: shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373051442450432
+    m_Localized: win game/game over
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373484147822592
+    m_Localized: vegebatlbes ingridient
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373547779608576
+    m_Localized: fruit ingridient
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373608034979840
+    m_Localized: meat ingridient
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374130221633536
+    m_Localized: Generator food
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374105705926656
+    m_Localized: upgrade food generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374151864242176
+    m_Localized: fabric craft generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374955962650624
+    m_Localized: golden chance upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374954821799936
+    m_Localized: upgrade -cost food animal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374953135689728
+    m_Localized: chance animal upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374951281807360
+    m_Localized: limit animal upgrade
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -29,6 +29,7 @@ public class SpawnCrafter : MonoBehaviour
 
         if (closeButton != null)
             closeButton.onClick.AddListener(CloseCraftInterface);
+        RarityLocalizer.OnLanguageChanged += UpdateUI;
     }
 
     private void BuyAndSpawn()
@@ -62,12 +63,16 @@ public class SpawnCrafter : MonoBehaviour
         bool isMax = currentPurchaseCount >= maxPurchaseCount;
 
         if (priceText != null)
-            priceText.text = isMax ? "MAX" : $"COST: {itemPrice}";
+            priceText.text = isMax ? "MAX" : $"{RarityLocalizer.GetLocalizedCost()} {itemPrice}";
 
         if (countText != null)
             countText.text = $"{currentPurchaseCount}/{maxPurchaseCount}";
 
         if (buyButton != null)
             buyButton.interactable = !isMax;
+    }
+    void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdateUI;
     }
 }

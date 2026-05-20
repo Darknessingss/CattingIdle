@@ -27,6 +27,7 @@ public class GeneratorUpgrade : MonoBehaviour
         wallet = FindFirstObjectByType<Wallet>();
         upgradeButton.onClick.AddListener(TryUpgrade);
         UpdateUI();
+        RarityLocalizer.OnLanguageChanged += UpdateUI;
     }
 
     private void TryUpgrade()
@@ -53,7 +54,7 @@ public class GeneratorUpgrade : MonoBehaviour
         bool isMax = currentUpgradeLevel >= maxUpgradeLevel;
 
         if (upgradePriceText != null)
-            upgradePriceText.text = isMax ? "MAX" : $"COST: {CurrentUpgradePrice}";
+            upgradePriceText.text = isMax ? "MAX" : $"{RarityLocalizer.GetLocalizedCost()} {CurrentUpgradePrice}";
 
         if (upgradeLevelText != null)
             upgradeLevelText.text = $"{currentUpgradeLevel}/{maxUpgradeLevel}";
@@ -66,4 +67,9 @@ public class GeneratorUpgrade : MonoBehaviour
     }
 
     public float GetCurrentFoodPerTick() => CurrentFoodPerTick;
+
+    void OnDestroy()
+    {
+        RarityLocalizer.OnLanguageChanged -= UpdateUI;
+    }
 }
