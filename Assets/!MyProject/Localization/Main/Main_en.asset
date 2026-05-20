@@ -146,6 +146,10 @@ MonoBehaviour:
     m_Localized: limit animal upgrade
     m_Metadata:
       m_Items: []
+  - m_Id: 389212573913088
+    m_Localized: cameraset
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
